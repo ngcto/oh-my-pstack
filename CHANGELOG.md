@@ -1,0 +1,34 @@
+# Changelog
+
+## 0.1.0
+
+Initial release. A native oh-my-pi port of Cursor's pstack.
+
+### Changed from upstream pstack
+
+- Plain voice is the default. The always-applied rule `rules/pstack-voice.md` replaces the `/bro` skill. "simpler" restates the last reply in plainer words.
+- GitHub through `gh` is the only forge. The `origin` CLI and every Origin forge path are gone.
+- Thermos runs in every review step: the pre-PR gate, babysit, shipping verdicts, autopilot verifier rounds, review-bot triage, and per-PR review in orchestrate and multi-phase plans. `interrogate` stays the multi-model panel and applies both thermo rubrics.
+- GitHub native Stacked PRs (`gh stack` and the stacks REST API) replace Graphite. New `stacked-prs` skill. Shipping lands the contiguous verified run with `gh stack merge`. Auto-merge is not used for stacks.
+- Model choice is per role with omp role aliases (`@slow`, `@smol`, `@task`, `@default`) instead of model slugs. Overrides live in `pstack-models.md` under `~/.omp/agent/rules/` or `.omp/rules/`.
+- Review-bot triage is vendor-neutral. `bugbot-triage.md` is now `review-bot-triage.md`.
+- Skill frontmatter is normalized for omp. Cursor-only keys (`mode`, `icon`, `color`, `reminder`) are removed, and names equal directory names.
+
+### Added
+
+- Principle `tests-pay-rent`, from OpenClaw `test-audit`.
+- Principle `small-door-big-room`, from mattpocock `codebase-design`.
+- Skills `deslop`, `control-cli`, `control-ui`, ported from cursor-team-kit and rewritten for omp tools.
+- Skills `thermos`, `thermo-nuclear-review`, `thermo-nuclear-code-quality-review` and agents `thermo-review`, `thermo-quality`, from thermos.
+- Extension: sticky `/poteto-mode` command (on, off, status) and the `pstack_models` tool, plus `before_subagent_spawn` routing for `thermo-review`, `thermo-quality`, and `poteto-agent`.
+- Repo lint gate and tests (`bun run check`).
+
+### Dropped
+
+- `bro` skill.
+- `make-bot-ui` skill.
+- The dormant benny automation pack.
+- Origin CLI support.
+- Graphite and every `gt` concept.
+- Cursor-only skill frontmatter and Cursor-specific tooling (`/add-plugin`, `.cursor/` paths, built-in `create-skill` and `/babysit` caveats).
+- Guide images.

@@ -1,0 +1,13 @@
+### Autonomous run
+
+**You own the exit condition. Define done, then drive to it without stopping.**
+
+1. State the exit condition as a checkable predicate before the first iteration (tests green, repro fixed, all N PRs merged, pixel-diff zero).
+2. Pick the wake mechanism. `/goal` tracks the objective itself and has an agent-side tool. `/loop [count|duration] [--while|--until '<cmd>'] [prompt]` is typed by the user, never started by you: it re-submits the prompt about a second after each turn until the count runs out, the duration (a total time budget, not a cadence) ends, or the command decides it is done, for example `/loop 20 --until 'gh pr view 42 --json state -q .state | grep -q MERGED' check the PR`. When the operator wants that, ask them to start it. For a wake you drive yourself, start an async `bash` job (`async: true`, no `name`, `timeout: 0`) that sleeps or polls, then end the turn or `wait`. The job's completion is delivered to you as a follow-up and wakes the session. An event to watch (CI, a merge, a ref advancing) gets a watcher subagent you `wait` on, or a polling job that exits on the event, with a `sleep` job as the heartbeat fallback. No event gets a fixed-interval heartbeat sized to when the result is worth re-checking (`sleep 3600` for an hourly audit, restarted as the last act of each tick). The sleep job lives only as long as the session, so a run that must outlive it needs the operator's `/loop --until`.
+3. Each iteration makes the smallest change the evidence justifies, verifies it against the predicate, commits if it advanced, discards changes that didn't help. Belt-and-suspenders that "might help" gets reverted, not left to ride.
+   Sequence the work via the **sequence-verifiable-units** principle skill, verifying each unit before the next instead of batching checks at the end.
+4. Mid-run discoveries are yours. Address broken skills, related bugs, flaky verifiers, review noise, tooling failures, orphaned follow-ups, and fixable drift yourself via poteto-mode. Put out-of-band fixes in their own PR. Do not park reversible work for the human or use the `ask` tool. Surface only irreversible actions, genuine product or preference calls no experiment can settle, or a real dead end. Keep the predicate as the main drive, and return to it after each side fix.
+5. Checkpoint every iteration via the **show-me-your-work** skill, a row for what changed and whether the predicate moved.
+6. Stop when the predicate is met. A plateau is not a stop, so keep going and pivot your approach to push past it. Surface a genuine dead end rather than spinning, and never relax the predicate to declare victory.
+
+**Reply:** the exit condition, iterations run, what landed, what was discarded, final predicate state.

@@ -1,0 +1,26 @@
+{
+	"name": "oh-my-pstack",
+	"version": "0.1.0",
+	"description": "pstack for oh-my-pi: rigorous engineering workflows, thermo-nuclear review, GitHub-native stacked PRs, plain-spoken by default.",
+	"type": "module",
+	"keywords": ["omp-extension", "oh-my-pi", "pstack", "workflow", "principles", "code-review", "stacked-prs"],
+	"license": "MIT",
+	"repository": { "type": "git", "url": "git+https://github.com/ngcto/oh-my-pstack.git" },
+	"omp": {
+		"extensions": ["./extensions/index.ts"]
+	},
+	"files": ["extensions", "skills", "agents", "rules", "docs", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "CHANGELOG.md", ".omp-plugin"],
+	"scripts": {
+		"test": "bun test extensions scripts",
+		"lint": "bun scripts/lint.ts",
+		"check": "bun scripts/lint.ts && bun test extensions scripts"
+	},
+	"peerDependencies": {
+		"@oh-my-pi/pi-coding-agent": ">=18.5.1"
+	},
+	"devDependencies": {
+		"@oh-my-pi/pi-coding-agent": "18.5.1",
+		"@types/bun": "^1.4.2",
+		"typescript": "^7.0.2"
+	}
+}
