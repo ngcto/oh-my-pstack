@@ -1,6 +1,6 @@
 # oh-my-pstack
 
-Rigorous engineering workflows for oh-my-pi (omp). It is a native port of Cursor's pstack, built by Lauren Tan (poteto). Twenty-three playbooks, thirty skills, twenty-six principles, and four agents route through one entry point, `/poteto-mode`. Replies are plain-spoken by default, review is thermo-nuclear, and stacked PRs run on GitHub's own Stacked PRs.
+Rigorous engineering workflows for oh-my-pi (omp). It is a native port of Cursor's pstack, built by Lauren Tan (poteto). Twenty-three playbooks, thirty-one skills, twenty-six principles, and four agents route through one entry point, `/poteto-mode`. Replies are plain-spoken by default, review is thermo-nuclear, and stacked PRs run on GitHub's own Stacked PRs.
 
 This is a derivative work. The skills, playbooks, principles, and guide come from upstream pstack (MIT, Lauren Tan / poteto, <https://github.com/cursor/plugins/tree/main/pstack>). Thermos and the ported `deslop`, `control-cli`, `control-ui` come from Cursor's `thermos` and `cursor-team-kit` plugins (MIT). Two new principles come from OpenClaw's `test-audit` and Matt Pocock's `codebase-design` (both MIT). The stacked-PR mechanics come from GitHub's `gh-stack` (MIT). Full credits are in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
 
@@ -101,6 +101,7 @@ New here? The [guide](./docs/guide/README.md) walks a first real task from setup
 | [`blast-radius`](./skills/blast-radius/SKILL.md) | find what a small change could break elsewhere, with the safety fact proven by running code. |
 | [`control-cli`](./skills/control-cli/SKILL.md) | drive, inspect, and profile an interactive CLI or TUI with a repeatable local harness. |
 | [`control-ui`](./skills/control-ui/SKILL.md) | drive and inspect a web, IDE, Electron, or native UI with screenshots, logs, and profiles. |
+| [`correct`](./skills/correct/SKILL.md) | find the mistakes agents keep repeating and make each one impossible: architecture first, then types, lint and ci, then tests, docs last. keeps a rule table. |
 | [`create-verification-skill`](./skills/create-verification-skill/SKILL.md) | generate a project-local skill that drives your app the way a user does. |
 | [`deslop`](./skills/deslop/SKILL.md) | remove AI slop from a branch diff before you open a PR. |
 | [`figure-it-out`](./skills/figure-it-out/SKILL.md) | no bundled playbook fits. design a rigorous, auditable one for the task. |

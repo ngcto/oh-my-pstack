@@ -1,13 +1,13 @@
 {
 	"name": "oh-my-pstack",
 	"owner": { "name": "ngcto" },
-	"metadata": { "description": "pstack for oh-my-pi", "version": "0.1.0" },
+	"metadata": { "description": "pstack for oh-my-pi", "version": "0.2.0" },
 	"plugins": [
 		{
 			"name": "oh-my-pstack",
 			"description": "Rigorous engineering workflows for oh-my-pi: poteto-mode playbooks, thermo-nuclear review, GitHub-native stacked PRs, plain-spoken by default.",
 			"source": "./",
-			"version": "0.1.0",
+			"version": "0.2.0",
 			"category": "development",
 			"homepage": "https://github.com/ngcto/oh-my-pstack",
 			"license": "MIT"

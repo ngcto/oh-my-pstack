@@ -1,6 +1,6 @@
 {
 	"name": "oh-my-pstack",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "pstack for oh-my-pi: rigorous engineering workflows, thermo-nuclear review, GitHub-native stacked PRs, plain-spoken by default.",
 	"type": "module",
 	"keywords": ["omp-extension", "oh-my-pi", "pstack", "workflow", "principles", "code-review", "stacked-prs"],

@@ -1,6 +1,21 @@
 # Changelog
 
+## 0.2.0
+
+Upstream: pstack 0.15.9 (cursor/plugins commit `e43c7ee`, 2026-10-03). Previous sync: 0.15.6.
+
+### Added
+
+- Skill `correct`: mines history for repeated agent mistakes and fixes each at the highest level that works.
+
+### Changed
+
+- `architect` screens candidates as an agent contributor would change them. `design-red-flags.md` adds split ownership, two ways to do one task, importable internals, and hand-synced list.
+- Perf issue step 2 uses seven ordered performance mantras instead of eight strategy families. `hillclimb` step 4 borrows their order. `benchmark-checklist` wording follows.
+
 ## 0.1.0
+
+Upstream: pstack 0.15.6.
 
 Initial release. A native oh-my-pi port of Cursor's pstack.
 
