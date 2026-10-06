@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+### Changed
+
+- `control-ui` uses Browser Use for web/CDP work and Cua Driver for native and GUI-only work instead of omp's built-in UI globals. Dependent playbooks and verification guides use the same drivers.
+- Bundled `browser-use` and `cua-driver` skills check the required executable and setup on first use. Missing installation, connections, daemons, or permissions require the user's approval. The plugin does not install or configure tools automatically.
+- Browser Use calls disable content telemetry per invocation, require an existing daemon after approved setup, and create owned tabs before navigation.
+
 ## 0.2.0
 
 Upstream: pstack 0.15.9 (cursor/plugins commit `e43c7ee`, 2026-10-03). Previous sync: 0.15.6.

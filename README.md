@@ -1,8 +1,8 @@
 # oh-my-pstack
 
-Rigorous engineering workflows for oh-my-pi (omp). It is a native port of Cursor's pstack, built by Lauren Tan (poteto). Twenty-three playbooks, thirty-one skills, twenty-six principles, and four agents route through one entry point, `/poteto-mode`. Replies are plain-spoken by default, review is thermo-nuclear, and stacked PRs run on GitHub's own Stacked PRs.
+Rigorous engineering workflows for oh-my-pi (omp). It is a native port of Cursor's pstack, built by Lauren Tan (poteto). Twenty-three playbooks, thirty-three skills, twenty-six principles, and four agents route through one entry point, `/poteto-mode`. Replies are plain-spoken by default, review is thermo-nuclear, and stacked PRs run on GitHub's own Stacked PRs.
 
-This is a derivative work. The skills, playbooks, principles, and guide come from upstream pstack (MIT, Lauren Tan / poteto, <https://github.com/cursor/plugins/tree/main/pstack>). Thermos and the ported `deslop`, `control-cli`, `control-ui` come from Cursor's `thermos` and `cursor-team-kit` plugins (MIT). Two new principles come from OpenClaw's `test-audit` and Matt Pocock's `codebase-design` (both MIT). The stacked-PR mechanics come from GitHub's `gh-stack` (MIT). Full credits are in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
+This is a derivative work. The skills, playbooks, principles, and guide come from upstream pstack (MIT, Lauren Tan / poteto, <https://github.com/cursor/plugins/tree/main/pstack>). Thermos and the ported `deslop`, `control-cli`, `control-ui` come from Cursor's `thermos` and `cursor-team-kit` plugins (MIT). The UI driver guides use Browser Use, Browser Harness, and Cua Driver (MIT). Two new principles come from OpenClaw's `test-audit` and Matt Pocock's `codebase-design` (both MIT). The stacked-PR mechanics come from GitHub's `gh-stack` (MIT). Full credits are in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
 
 ## what changes vs pstack
 
@@ -13,7 +13,7 @@ Seven deltas from upstream:
 3. **Thermos in every review step.** Pre-PR gate, babysit, shipping verdicts, autopilot verifier rounds, review-bot triage, and per-PR review in orchestrate and multi-phase plans all run [`thermos`](./skills/thermos/SKILL.md). `interrogate` stays as the multi-model panel.
 4. **New principle [`tests-pay-rent`](./skills/principle-tests-pay-rent/SKILL.md)**, from OpenClaw's `test-audit`. Authoring gate, junk patterns, retention bar, audit sweeps.
 5. **New principle [`small-door-big-room`](./skills/principle-small-door-big-room/SKILL.md)**, from `codebase-design`. Deep modules, seams, the deletion test.
-6. **`deslop`, `control-cli`, `control-ui` ship here**, rewritten for omp tools, instead of living in a second plugin.
+6. **`deslop`, `control-cli`, `control-ui` ship here** instead of living in a second plugin. UI control uses the bundled `browser-use` and `cua-driver` guides rather than omp's built-in UI globals.
 7. **GitHub native Stacked PRs replace Graphite.** `gh stack` plus the stacks REST API. See [stacked PRs](#stacked-prs).
 
 And it is omp-native instead of Cursor-shaped:
@@ -22,7 +22,7 @@ And it is omp-native instead of Cursor-shaped:
 - **`pstack_models` tool.** The extension resolves a role to concrete models, flags whether a panel is really diverse, and lists your authenticated models for `/setup-pstack`.
 - **Sticky `/poteto-mode` extension command.** On, off, or status. The mode persists across turns.
 - **Voice rule.** Plain replies come from an always-applied rule, not a skill you have to call.
-- **Native tools.** `task` and eval `workpool` for fan-out, eval `archive` for `recall`, eval `browser` and `computer` for UI work, `xd://lsp`, `xd://debug`, and `xd://ast_grep` for code intelligence.
+- **Native tools.** `task` and eval `workpool` for fan-out, eval `archive` for `recall`, `xd://lsp`, `xd://debug`, and `xd://ast_grep` for code intelligence. UI work uses the Browser Use and Cua Driver CLIs through `control-ui`.
 
 ## install
 
@@ -48,6 +48,8 @@ Prerequisites:
 - `gh`, authenticated.
 - `gh extension install github/gh-stack` for stacked PRs. GitHub Stacked PRs are in public preview.
 - git 2.36 or newer.
+
+UI drivers are optional until first use. [`control-ui`](./skills/control-ui/SKILL.md) selects [`browser-use`](./skills/browser-use/SKILL.md) for web/CDP work or [`cua-driver`](./skills/cua-driver/SKILL.md) for native and GUI-only work. The agent checks the selected executable and setup before driving. If anything is missing, it asks you to install and complete setup, or approve help. Nothing installs automatically.
 
 ## get started
 
@@ -99,10 +101,12 @@ New here? The [guide](./docs/guide/README.md) walks a first real task from setup
 | [`automate-me`](./skills/automate-me/SKILL.md) | draft your own `-mode` skill from how you have actually worked. |
 | [`benchmark-checklist`](./skills/benchmark-checklist/SKILL.md) | vet a benchmark or measured speedup before you report it. |
 | [`blast-radius`](./skills/blast-radius/SKILL.md) | find what a small change could break elsewhere, with the safety fact proven by running code. |
+| [`browser-use`](./skills/browser-use/SKILL.md) | drive web and Electron/Chromium CDP targets with the Browser Use CLI; check installation and setup on first use. |
 | [`control-cli`](./skills/control-cli/SKILL.md) | drive, inspect, and profile an interactive CLI or TUI with a repeatable local harness. |
-| [`control-ui`](./skills/control-ui/SKILL.md) | drive and inspect a web, IDE, Electron, or native UI with screenshots, logs, and profiles. |
+| [`control-ui`](./skills/control-ui/SKILL.md) | verify web, IDE, Electron, and native UIs through Browser Use or Cua Driver with screenshots and observed state. |
 | [`correct`](./skills/correct/SKILL.md) | find the mistakes agents keep repeating and make each one impossible: architecture first, then types, lint and ci, then tests, docs last. keeps a rule table. |
 | [`create-verification-skill`](./skills/create-verification-skill/SKILL.md) | generate a project-local skill that drives your app the way a user does. |
+| [`cua-driver`](./skills/cua-driver/SKILL.md) | drive native and GUI-only workflows with exact window targets, fresh element tokens, and user-approved setup. |
 | [`deslop`](./skills/deslop/SKILL.md) | remove AI slop from a branch diff before you open a PR. |
 | [`figure-it-out`](./skills/figure-it-out/SKILL.md) | no bundled playbook fits. design a rigorous, auditable one for the task. |
 | [`how`](./skills/how/SKILL.md) | walk through how a subsystem works, or where something should live. |

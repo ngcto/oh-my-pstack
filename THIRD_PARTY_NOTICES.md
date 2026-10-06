@@ -66,12 +66,73 @@ SOFTWARE.
 
 - Source: <https://github.com/cursor/plugins/tree/main/cursor-team-kit>
 - Copyright holder: 2026 Cursor
-- Adapted: The `deslop`, `control-cli`, and `control-ui` skills, rewritten for omp tools.
+- Adapted: The `deslop`, `control-cli`, and `control-ui` skills. UI control now routes to Browser Use and Cua Driver instead of omp's built-in UI globals.
 
 ```text
 MIT License
 
 Copyright (c) 2026 Cursor
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## Browser Use and Browser Harness
+
+- Sources: <https://github.com/browser-use/browser-use> and <https://github.com/browser-use/browser-harness>
+- Copyright holders: 2024 Gregor Zunic; 2026 Browser Use
+- Adapted: CLI setup, Python helper usage, CDP targeting, screenshot scaling, recording, and cleanup guidance in the `browser-use` skill.
+
+```text
+MIT License
+
+Copyright (c) 2024 Gregor Zunic
+Copyright (c) 2026 Browser Use
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## Cua Driver
+
+- Source: <https://github.com/trycua/cua/tree/main/libs/cua-driver/rust>
+- Copyright holder: 2025 Cua AI, Inc.
+- Adapted: Installation, exact-window targeting, snapshot-bound element tokens, permission boundaries, and cleanup guidance in the `cua-driver` skill.
+
+```text
+MIT License
+
+Copyright (c) 2025 Cua AI, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

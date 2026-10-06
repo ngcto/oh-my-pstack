@@ -12,7 +12,7 @@
 
 **Verification.** Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked (the **prove-it-works** principle skill). That sentence is the verification rule. Every verification block opens with it. The live block is mandatory. Ten lanes at the PR head drive the real surface through its control skill, per the **swarm** skill, on the `swarm-workers` role model (default `@task`, resolved through `pstack_models`). Each lane is one box with a concrete scenario, the screenshot it saves, and its pass predicate. One lane is the **Regression lane against trunk.** It runs the same load-bearing scenario on trunk and head. If trunk does not have the feature, the lane records that fact and gates the behavior the diff adds plus the end state the user waits for instead of inventing a trunk result. The perf gate is dual-sided. Trunk and head must both produce the named metric. If trunk lacks the feature, also isolate the work the diff adds and set an absolute budget for that work plus the end-to-end state the user waits for. Do not claim a ratio between unlike scenarios. The perf block names the metric, the interleaved probe, the trunk baseline measured first, and the rule with the number that fails. The two thermos lenses (`thermo-review`, `thermo-quality`) are a separate verdict input on the PR's own diff and never count as live lanes. The Verdict and merge block runs them next to the swarm. A PR that changes an interaction is review-gated. The operator reviews it in chat with screenshots and a video before merge. A PR that changes no interaction writes `**Review gate.** None. <PR id> is not review-gated.` and no boxes under it.
 
-**Control skill.** Pick it by surface. Browser, Electron, and web UIs use the `control-ui` skill. CLIs and TUIs use the `control-cli` skill. Native desktop apps use the eval `computer` global, which is opt-in (`/computer on`). Native mobile uses whatever simulator-driving skill the repo has. A PR that touches two surfaces gets lanes on both. A surface with no control skill is a risk in Appendix C, and its live block still names how each lane drives it.
+**Control skill.** Pick it by surface. Web, Electron, IDE, and native desktop UIs use `skill://control-ui`, which selects `skill://browser-use` or `skill://cua-driver` and requires user approval for missing installation or setup. CLIs and TUIs use `skill://control-cli`. Native mobile uses whatever simulator-driving skill the repo has. A PR that touches two surfaces gets lanes on both. A surface with no control skill is a risk in Appendix C, and its live block still names how each lane drives it.
 
 ````markdown
 # <Program> plan
@@ -121,7 +121,7 @@ Each live lane runs in its own isolated worktree at the PR head, started with `i
 **Review gate.** The operator reviews before merge.
 
 - [ ] Copy lane <n> screenshots into `<media path>/<pr-id>-review-<slug>.png`.
-- [ ] Record a 30 to 60 second video of the change in a lane's isolated worktree, through the `control-ui` skill (`tab.recordStart`) or the `control-cli` skill's terminal recorder. Save it as `<media path>/<pr-id>-review.mp4`.
+- [ ] Record a 30 to 60 second video of the change in a lane's isolated worktree. Follow the selected driver's recording guide through `skill://control-ui`, or the `control-cli` skill's terminal recorder. Save it as `<media path>/<pr-id>-review.mp4`.
 - [ ] Post the screenshots and the video in chat. Stop at merge-ready. Wait for the operator's click.
 
 **Merge.**

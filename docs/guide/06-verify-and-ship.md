@@ -30,11 +30,11 @@ The UI bullet above hides a real requirement. The agent needs a scripted way to 
 /create-verification-skill
 ```
 
-[`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) interviews the repository, not you. It works out what a user touches, how the app launches locally, what can drive it (an existing harness first, otherwise the eval `browser` global for web UIs, the `computer` global for native apps, a PTY for CLIs and TUIs, or plain HTTP), what evidence proves behavior, and whether two instances can run side by side. It asks you only what the code can't answer.
+[`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) interviews the repository, not you. It works out what a user touches, how the app launches locally, and what can drive it. It reuses an existing harness first. Otherwise, [`control-ui`](../../skills/control-ui/SKILL.md) selects Browser Use for web/CDP work or Cua Driver for native and GUI-only work; a PTY handles CLIs and TUIs, and plain HTTP handles services. It checks what evidence proves behavior and whether two instances can run side by side. If the selected UI tool or setup is missing, it asks you to install and set it up before driving.
 
 It writes `.omp/skills/verify-<app>/`, agent-facing instructions with exact Launch, Doctor, Drive, Evidence, and Cleanup sections, plus a feature map under `features/` that indexes what the app does and what result proves each feature works. The skill ships a [worked feature-map example](../../skills/create-verification-skill/references/feature-map-example/) with a README index and one file per feature using the four required H2s. Before handing it over, the generator proves the skill once end to end: launch, doctor check, drive one feature, capture evidence, clean up. If that proof fails, don't use the output.
 
-From then on, "verify it in the app" is a step any agent can execute, in this repo, with no setup conversation.
+From then on, "verify it in the app" is a step any agent can execute in this repo once the required driver is installed and configured.
 
 Once the verify skill works, a [`/swarm`](../../skills/swarm/SKILL.md) can split a full pass by feature-map entry and aggregate the results.
 

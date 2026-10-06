@@ -15,6 +15,8 @@ omp plugin install oh-my-pstack@oh-my-pstack
 
 For a local checkout, use `omp plugin link <path>`, or start omp with `omp --plugin-dir <path> -e <path>/extensions/index.ts`. `--plugin-dir` alone loads skills, agents, and rules but not the extension. Run `/reload-plugins` after changing skills, agents, or rules. The extension (the `/poteto-mode` command and the `pstack_models` tool) loads at startup, so restart omp after installing it.
 
+UI tools are checked only when needed. [`control-ui`](../../skills/control-ui/SKILL.md) uses [`browser-use`](../../skills/browser-use/SKILL.md) for web and CDP targets, or [`cua-driver`](../../skills/cua-driver/SKILL.md) for native and GUI-only work. If the selected tool or its setup is missing, the agent asks you to install and set it up before driving. The plugin does not install drivers or change permissions automatically.
+
 ## Pick your models
 
 This step is optional. Every role defaults to an omp role alias: `@slow` for judgment and prose, `@smol` for fast exploration, `@task` for code delegates, and `@default` for your current model. pstack works on any provider with no config. Run setup only to override.

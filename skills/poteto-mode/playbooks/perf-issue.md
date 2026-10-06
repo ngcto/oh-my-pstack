@@ -2,7 +2,7 @@
 
 **You own the measurement story. Plan, review, verify the numbers.** Tie every fix to a measurement, don't read source instead of measuring.
 
-1. Capture a baseline trace via the matching control skill (for web surfaces the eval `browser` global offers `profileStart`, `traceStart`, metrics, and vitals; for a live process, `xd://debug`). Vet the baseline, and each later number, with the **benchmark-checklist** skill.
+1. Capture a baseline trace via the matching control skill. For web surfaces, read `skill://control-ui` and use Browser Use's `cdp(...)` for CPU profiles, traces, and metrics; for a live process, use `xd://debug`. Vet the baseline, and each later number, with the **benchmark-checklist** skill.
 2. `how` to ground hypotheses. Don't claim a perf ceiling without running it first.
    Try the performance mantras in order, cheapest first:
    1. Don't do it. Stop work whose result nothing uses rather than cheapening it.

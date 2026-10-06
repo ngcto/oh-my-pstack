@@ -21,7 +21,7 @@ Do not force a test when it would be impractical. If the available test would re
 
 ## If a Failing Test Is Impractical
 
-Use the closest executable regression check instead: a targeted script, manual reproduction command, browser automation (the eval `browser` global), snapshot comparison, log assertion, or focused integration check.
+Use the closest executable regression check instead: a targeted script, manual reproduction command, UI automation through `skill://control-ui`, snapshot comparison, log assertion, or focused integration check.
 
 Prefer no new test over a bad test, per the retention bar in **tests-pay-rent**. A bad test is one that mostly tests mocks, encodes current implementation details, depends on timing or unrelated global state, needs expensive infrastructure for a small fix, or would be deleted immediately after proving the fix.
 
