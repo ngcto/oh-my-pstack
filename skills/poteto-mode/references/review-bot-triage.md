@@ -14,8 +14,9 @@ Use available GitHub bot or human feedback as review coverage under `skill://the
 
 Classify each thread under `skill://thermos` before acting:
 
-- `fix`: The owner accepts a verified, in-scope defect. Make the smallest fix in the lowest owning PR and prove the affected path. Reply with the commit SHA and resolve the thread. A plausible concern alone is not confirmation.
-- `dismiss`: The current code or contract disproves the claim, or the comment is speculative, preference-only, or a non-blocking suggestion outside scope. Reply with a concrete reason and resolve the thread.
+- `fix`: The owner accepts an evidenced, in-scope issue or simplification. Fix the root cause in the lowest owning PR and prove the affected behavior. Prefer deletion or a simpler model when that removes the problem. Reply with the commit SHA and resolve the thread. A plausible concern alone is not evidence.
+- `dismiss`: The current code or contract disproves the claim, or the comment is speculative, preference-only, or outside scope. Reply with a concrete reason and resolve the thread.
+- `consider`: The finding is valid and non-blocking, but the owner declines or defers the change. Record the finding and the owner's decision, acknowledge the suggestion in the thread, and resolve it without changing code. Declining work does not make the finding false. An unresolved evidenced P0 or P1 cannot take this disposition.
 - `ask`: A confirmed risk needs a product or operator decision that code and focused checks cannot settle. State the evidence and the remaining decision instead of guessing.
 
 Resolve factual uncertainty with code or focused checks before escalating. Use `skill://thermos` for blocking and re-review rules. Non-blocking suggestions do not become fix gates because a bot filed them.

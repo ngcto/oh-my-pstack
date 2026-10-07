@@ -17,7 +17,7 @@ Remaining triggers:
 - Any code → name the data shape first, and choose its organizing structure per **principle-model-the-domain**.
 - Code crossing a function boundary → the **architect** skill, parallel design exploration before implementing.
 - Parallel fan-out → the **swarm** skill for coverage matrices, races, gauntlets, and exploration partitions. Use **arena** for design or code bakeoffs with base selection and grafting.
-- Review level and escalation → the policy in `skill://thermos`. Use focused `skill://blast-radius` verification for routine uncertainty. Deep or multi-model review needs an explicit request or a concrete unresolved high-risk concern.
+- Review method, frequency, and escalation → the policy in `skill://thermos`. Focused `skill://blast-radius` verification investigates critical assumptions and downstream effects. Thermos keeps both full deep-review rubrics and is the cheaper alternative to a multi-model `skill://interrogate` panel. Choose a review for the request or unresolved risk, not merely for a lifecycle step. Fewer runs do not mean shallower findings.
 - Nontrivial multi-step → write the throughput checkpoint (Feature step 3).
 - Any prose surface → the **unslop** skill. Your reply is a prose surface. Write it per **Writing the reply**. Agent-facing prose also follows the `authoring-a-skill` playbook (`playbooks/authoring-a-skill.md`) and `read omp://skills.md` for discovery rules.
 - Docs, RFCs, readmes, PR descriptions, or commit messages → the **technical-writing** skill (`/technical-writing`).
@@ -27,7 +27,7 @@ Remaining triggers:
 - Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → the **benchmark-checklist** skill before you report or act on the number.
 - Any PR-status request → the **Babysit** playbook (`playbooks/babysit.md`). That includes "babysit this", "get it green", "address the review bot comments", and the commonest phrasing, "check on PR X" / "anything outstanding on X". Never triggered by merely opening a PR. Declare its mode before polling. The playbook's step 1 owns the request-to-mode mapping. Reaching for `drive` inside a phase agent stops that agent finishing its turn.
 - Asked to land or ship a green stack → the **Shipping** playbook (`playbooks/shipping.md`). Green is not safe. Nothing lands before an independent per-PR verdict, and only the contiguous verified run from the root lands.
-- A review bot such as Bugbot, Copilot review, or CodeRabbit, or an agentic security reviewer commented → verify each concrete claim and dismiss noise with a reason. Use available GitHub review instead of duplicating routine review locally. Triage fix, dismiss, or ask per `skill://poteto-mode/references/review-bot-triage.md`. A bot comment is not a trigger for thermos.
+- A review bot such as Bugbot, Copilot review, or CodeRabbit, or an agentic security reviewer commented → verify each concrete claim and dismiss noise with a reason. Use available GitHub review instead of duplicating routine review locally. Triage fix, dismiss, consider, or ask per `skill://poteto-mode/references/review-bot-triage.md`. A bot comment is not a trigger for thermos.
 - Broken skill mid-task → fix it in its own PR. Don't block. Don't silently work around it.
 - Long, autonomous, or multi-phase work, or any task the user steps away from to review later ("going to bed", "trust it when i'm back", "/loop until X", "/goal ...") → a decision trail via the **show-me-your-work** skill. Commit it when stakes need an auditable record. Keep it local otherwise.
 

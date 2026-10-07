@@ -123,9 +123,9 @@ New here? The [guide](./docs/guide/README.md) walks a first real task from setup
 | [`tdd`](./skills/tdd/SKILL.md) | failing test first, then the fix, when there is a cheap test path. |
 | [`teach`](./skills/teach/SKILL.md) | runs `how` and `why` and weaves one plain explanation. |
 | [`technical-writing`](./skills/technical-writing/SKILL.md) | layered doc standard for docs, RFCs, readmes, PR bodies, commit messages. |
-| [`thermo-nuclear-code-quality-review`](./skills/thermo-nuclear-code-quality-review/SKILL.md) | concrete maintainability regressions and unnecessary complexity on a scoped diff. |
-| [`thermo-nuclear-review`](./skills/thermo-nuclear-review/SKILL.md) | evidenced correctness and security defects on a scoped diff. |
-| [`thermos`](./skills/thermos/SKILL.md) | proportional review policy and an optional two-lens deep review with one deduped verdict. |
+| [`thermo-nuclear-code-quality-review`](./skills/thermo-nuclear-code-quality-review/SKILL.md) | deep maintainability, code-judo, file cohesion, spaghetti, module depth, and test value on a scoped diff. |
+| [`thermo-nuclear-review`](./skills/thermo-nuclear-review/SKILL.md) | comprehensive correctness, security, cross-package breakage, devex, and feature-gate review. |
+| [`thermos`](./skills/thermos/SKILL.md) | two full deep-review lenses and one deduped verdict, with a policy for choosing and reusing review coverage. |
 | [`typescript-best-practices`](./skills/typescript-best-practices/SKILL.md) | grounds the type-system principle in TypeScript syntax. loads on .ts files. |
 | [`unslop`](./skills/unslop/SKILL.md) | cut AI tells from any writing. |
 | [`why`](./skills/why/SKILL.md) | find why something was built this way, from source control and MCPs. |
@@ -169,18 +169,18 @@ Twenty-six short skills, one principle each: the 24 from upstream plus two new o
 |---|---|
 | [`comment-sicko`](./agents/comment-sicko.md) | A deranged comment-hater that savors deletion and condemns workaround code. Read-only reporter. |
 | [`poteto-agent`](./agents/poteto-agent.md) | Full-access worker that runs in poteto-mode style. Routing target for playbook steps, code-writing delegates, and ad-hoc helpers. Autoloads the poteto-mode skill, so prefer it over the plain task agent whenever poteto's rigor is wanted. Spawn a fresh one per new task. |
-| [`thermo-quality`](./agents/thermo-quality.md) | Diff-scoped maintainability review for concrete regressions and unnecessary complexity. Gathers its own diff from a scope spec. Read-only. |
-| [`thermo-review`](./agents/thermo-review.md) | Diff-scoped correctness and security review for evidenced failures in changed code. Gathers its own diff from a scope spec. Read-only. |
+| [`thermo-quality`](./agents/thermo-quality.md) | Deep structural audit for maintainability regressions and code-judo opportunities. Gathers its own scoped diff. Read-only. |
+| [`thermo-review`](./agents/thermo-review.md) | Comprehensive correctness and security audit that traces cross-package impact from a scoped diff. Read-only. |
 
 Use `poteto-agent` for any subagent spawned inside a playbook step. It autoloads `poteto-mode`, so it starts with the rules already read.
 
 ## thermos
 
-[`Thermos`](./skills/thermos/SKILL.md) defines the review policy used by the playbooks. Low-risk work uses diff inspection and relevant checks without a review agent. Routine behavior changes use tests and a smoke run, with the bundled [`blast-radius`](./skills/blast-radius/SKILL.md) skill for one or two concrete uncertainties. When GitHub bots or humans cover routine PR review, use their feedback rather than duplicating it locally. Check that coverage exists. PR creation does not wait for a bot that starts only after the PR opens.
+[`Thermos`](./skills/thermos/SKILL.md) separates review frequency from depth. Low-risk work uses diff inspection and relevant checks without a review agent. Routine behavior changes use tests and a smoke run. The bundled [`blast-radius`](./skills/blast-radius/SKILL.md) skill is an evidence-driven alternative for critical assumptions and downstream effects. It traces deeply, exercises real failure cases, and states what it did not cover. When GitHub bots or humans cover routine PR review, use their feedback rather than duplicating it locally. Check that coverage exists. PR creation does not wait for a bot that starts only after the PR opens.
 
-An explicit deep-review request or a concrete high-impact risk left unresolved by focused verification gets one thermos run. Its `thermo-review` and `thermo-quality` agents inspect the same scope in parallel and return one verdict. [`Interrogate`](./skills/interrogate/SKILL.md) replaces thermos when a multi-model review is requested or a high-risk design is genuinely contested.
+An explicit deep-review request or a concrete high-impact risk left unresolved by focused verification gets one thermos run. Both full lenses inspect the same scope in parallel. They search for unnamed failures, cross-package consequences, serious structural regressions, and code-judo simplifications. Useful P0-P3 findings remain visible. [`Interrogate`](./skills/interrogate/SKILL.md) uses the same rubrics across multiple models. Thermos is the cheaper alternative for deep findings because it runs one pair of agents, not because it reviews less thoroughly.
 
-Reuse reviews across implementation, PR creation, babysitting, and shipping. A push, changed SHA, rebase, or merge request is not a reason to run another audit. Verify accepted fixes on the affected paths. Stop when confirmed P0 or P1 blockers are resolved and relevant checks pass. P2 and P3 suggestions, file length, and possible alternative designs do not require rework or another round. Behavioral verification, GitHub checks, and stack merge safety still apply.
+Reuse reviews across implementation, PR creation, babysitting, and shipping. A push, changed SHA, rebase, or merge request is not a reason to run another audit. Verify accepted fixes on the affected paths. Stop when evidenced P0 or P1 blockers are fixed or dismissed and relevant checks pass. A serious structural regression can be a blocker. Lower-priority findings and simplification proposals stay available for the owner's decision without forcing a zero-findings loop. Behavioral verification, GitHub checks, and stack merge safety still apply.
 
 ## stacked PRs
 

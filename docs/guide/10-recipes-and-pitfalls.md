@@ -32,7 +32,7 @@ Each worker owns one package. The parent waits for every slice and returns one `
 /thermos the whole branch against main
 ```
 
-The command explicitly requests one deep review under the [proportional review policy](../../skills/thermos/SKILL.md). Two lenses, bugs and security plus concrete maintainability risks, run once on the same diff. You get one deduped verdict, findings first. It never edits. Verify accepted fixes on the affected path instead of running a broad re-review loop until clean.
+The command requests one deep review under the [review policy](../../skills/thermos/SKILL.md). Both full lenses search the same scope for bugs, security issues, cross-package breakage, structural regressions, and code-judo simplifications. Thermos is the cheaper alternative to a multi-model panel through fewer reviewers, not less depth. You get one deduped verdict with useful P0-P3 findings. It never edits. Choose which improvements to accept and verify their affected paths instead of repeating the audit until no findings remain.
 
 ## Review a branch skeptically
 
