@@ -77,9 +77,9 @@ Tag each finding with the lens from the item that produced it (`thermo-review` o
 4. Bucket every finding:
    - **act-on**: evidenced, in-scope P0 and P1 findings, plus lower-priority issues or simplifications accepted by the owner. Blockers belong here before owner acceptance. Fix the root cause without unrelated work.
    - **consider**: valid non-blocking improvement or lower-priority finding the owner has not selected, including code-judo opportunities. Preserve its evidence and tradeoff. Do not silently turn it into new work.
-   - **noted**: true but out of scope or intended, recorded only.
+   - **noted**: true but out of scope or intended, recorded only. Give a concrete scope or intent reason. Defects or unaccounted-for consequences introduced or exposed by the PR remain in scope.
    - **dismissed**: wrong, speculative, preference-only, or already handled, with a concrete reason.
-5. Verdict is `approve` or `changes_requested`. Any unresolved evidenced P0 or P1 means `changes_requested`, including a serious structural regression. Fix or dismiss it with evidence, verify the affected path, and proceed without another full review. Declining a fix does not remove a blocker. Resolve a disputed finding explicitly rather than parking it in consider, hiding it, or lowering its priority. Approval does not require an empty findings list.
+5. Verdict is `approve` or `changes_requested`. Any unresolved evidenced, in-scope P0 or P1 means `changes_requested`, including a serious structural regression. Fix or dismiss it with evidence, verify the affected path, and proceed without another full review. Declining a fix does not remove a blocker. Resolve a disputed finding explicitly rather than parking it in consider, hiding it, or lowering its priority. Approval does not require an empty findings list.
 6. If `show-me-your-work` is active, add a trail entry: scope, lenses run, buckets, verdict, dismissals with reasons.
 
 If the agents' summaries are already visible to the user, do not restate them. Surface the unified verdict, the highest-signal findings, and remaining uncertainty.
