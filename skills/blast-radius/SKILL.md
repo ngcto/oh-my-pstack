@@ -35,7 +35,7 @@ Step 4 is usually one small script that imports the same library the app ships a
 3. Look where static search stops. Read the source of the library you call, and check its pinned version and any local patch. Work out when things run: microtasks, unmount and teardown, Solid versus React. Follow what `xd://lsp` and `xd://ast_grep` miss: the JSON an API returns, a DB column, a wire format, another language reading the same bytes, a feature flag, code three hops downstream, dynamic dispatch and string-keyed lookups.
 4. Be honest about each risk. Give it a real chance of happening and a real cost if it does. Keep the risks you confirmed. List the ones you checked and cleared separately. Same rules as `why`. Cite a real `file:line`, a search that finds nothing is still an answer, and never make up a caller or an API.
 5. Prove the one fact. Write a script or test that runs the real code, run it, and paste what happened.
-6. For a big or wide change, run it as an `arena`. Ask several models the same question and merge the answers. Different models catch different real bugs. For a diff you don't trust, `thermos` is the cheap second opinion on the same scope, but it reads the diff and does not run anything, so it never replaces step 5.
+6. Stop when the named risks are proved or dismissed. Follow `skill://thermos` if a concrete high-impact uncertainty remains or the user requests a deep review. Do not turn a focused check into an automatic arena or thermos audit. Review never replaces step 5.
 
 ## What to hand back
 

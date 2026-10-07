@@ -1,51 +1,38 @@
 ---
 name: thermo-nuclear-review
-description: Comprehensive security and correctness audit of a branch's changes. Use for thermo nuclear, thermonuclear, or deep review requests, or branch/PR diff audits focused on bugs, breaking changes, security issues, devex regressions, and feature-gate leaks.
+description: Audit a scoped diff for evidenced correctness and security defects. Use for thermo nuclear, thermonuclear, explicit deep review, or a named high-risk concern involving bugs, breakage, security, devex, or feature-gate leaks.
 disable-model-invocation: true
 ---
 
-# Thermo Nuclear Review
+# Thermo-nuclear review
 
-Use this skill for a comprehensive security and correctness audit of a branch or diff scope. Gather the diff yourself (`git diff <base>...<head>`) when the caller passes a scope instead of a diff.
+Audit the assigned diff for concrete correctness and security failures. Gather it yourself with `git diff <base>...<head>` when the caller passes a scope. Follow `skill://thermos` for review level, reuse, and stop conditions.
 
-## Prompt
+## Scope
 
-You are a security expert performing a comprehensive review of a checked out branch. Audit this branch and its changes extremely thoroughly for bugs, changes that break existing features/functionality, and security vulnerabilities. Be EXTREMELY thorough, rigorous, careful, ambitious, and attentive. NOTHING can slip through.
+Report only issues introduced by added or modified code. Read surrounding code and callers when needed to establish whether a plausible failure is reachable. Do not audit untouched subsystems or invent hypothetical users and inputs.
 
-# Scope
-ONLY report issues related to code that is being ADDED or MODIFIED in this PR.
-Focus on changes in the diff.
-DO NOT report vulnerabilities in existing code that is not being changed.
+## What to check
 
-# Guidelines
+- Broken behavior or contracts on a reachable path.
+- Authorization, secret handling, data loss, and other concrete security risks.
+- Devex changes that prevent an existing supported setup from running or building.
+- Features accidentally exposed outside an existing flag or access boundary.
 
-## Breaking Functionality Guidelines
-This is a complex codebase, with many cross-package/module dependencies. Often simple code changes in one place have subtle interactions that break functionality elsewhere. You MUST be extremely thorough in tracing through possible side effects of the changes.
+Trace a suspected issue far enough to prove or dismiss it. If the relevant guard, caller, or dependency is available, read it before reporting. Do not expand the audit after the scoped questions are resolved.
 
-## Breaking Devex Guidelines
-It can be easy to break developers' ability to run / build the code locally. You MUST catch changes that will impact users' developer experience. Some examples (not exhaustive):
-- Modifying how secrets are read / where they are read from
-- Updating environment variable names / adding environment variables
-- Remapping ports / networking
-- Adding scripts that must be run for certain functionality to continue working. Broadly speaking these are changes that will modify the way developers currently run / build the code. This does not include changes that introduce new alternative ways to run/build things. Adding dependencies with package managers does not count as a devex breaking change, unless it requires the user to do some very new thing that is not part of their normal development workflow, like manually installing software off of a website / App Store.
+Intended, well-scoped behavior changes are not defects. Report an unintended consequence only when the code supports it. Keep the remedy inside this task and prefer the smallest correction.
 
-## Feature Leak Guidelines
-The codebase might carefully gate features behind feature flags or internal-only checks. You MUST NOT allow any features that are meant to be behind a feature gate leak. These leaks are often subtle. Be VERY careful and thorough.
+## Findings
 
-## Intended Breakage Guidelines
-If you identify a high risk finding, but the intent of the branch is to introduce that finding (e.g. break some functionality, remove a feature flag, remove a safeguard) AND the scope of the change is well constrained, you SHOULD NOT waste the author's time by reporting the issue to them. However, if you believe it is likely that they are not aware of the full implications of their change, or you are worried that they are under-weighting the negative impacts (extreme example: a developer pushes a PR titled "Delete the database"), or you are worried that the change is actually malicious, you should still report the finding.
+Each finding needs a changed file and line, the triggering input or state, the reachable failure path, and the user or system impact. Omit style preferences, generic defensive-programming advice, and speculative edge cases.
 
-## Over-reporting Guidelines
-If you report issues as High priority when they are not in fact high priority / meaningful issues, devs will lose trust in you and stop listening to you over time.
-NEVER misreport the priority / importance of issues. Be extremely thorough in tracing issues end-to-end to gain complete, and total confidence before reporting.
+Calibrate priority by impact. P0 and P1 require a confirmed severe failure. P2 and P3 are non-blocking. A security label or agreement from another reviewer does not itself increase severity.
 
-# Final Response
-IF you have medium-to-high priority / risk findings, and there is a PR for this branch, then check the PR discussion using the gh cli (`gh pr view <n> --comments`, `gh api repos/<o>/<r>/pulls/<n>/comments`) to see if there are comments from review bots (Bugbot, Copilot review, CodeRabbit, ...) or humans.
-If so, take their findings into account. If they found issues you missed, evaluate them to determine if they are valid and include them in your report. If they found some of the same issues you did, see if there is anything from their findings that are worth incorporating into your response.
-Flag issues found by review bots or others in the PR discussion that you include in your report.
+When a PR exists, inspect its discussion after the independent audit only if a concrete finding needs that context. Validate and attribute any bot or human claim you include. Do not duplicate already resolved findings or demand a local audit merely because a bot commented.
 
+## Verdict
 
-# Critical Rules
-- NEVER present issues with unfinished research. E.g. Never say something like, "The client has issue X, but if handled in the backend then this is ok." if you have access to the backend code and can check for yourself.
-- You MUST wait to check the PR discussion until AFTER you have performed your audit. This way you have fresh eyes while you review.
-- Be EXTREMELY thorough, rigorous, careful, ambitious, and attentive. NOTHING can slip through.
+Return `changes_requested` only for a confirmed P0 or P1 defect. Otherwise return `approve`, including any concrete non-blocking findings worth reporting. No praise or finding quota.
+
+After an accepted blocker is fixed, verify the affected path instead of requesting another full audit. An empty findings list is not the completion criterion.

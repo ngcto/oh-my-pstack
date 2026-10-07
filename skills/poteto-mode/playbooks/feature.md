@@ -13,7 +13,7 @@
 5. Verify on the matching surface. "Inconclusive" or wrong-surface is not a pass. Flag it.
 6. Rebase into small, ordered commits. Stack follow-ups (see the `stacked-prs` skill).
    Use the **sequence-verifiable-units** principle skill, building, verifying, and committing each small unit before the next.
-7. Run **no-comments** and **deslop** on the diff, then run the **thermos** skill on it (base to head, with an intent paragraph). Fix every P0 and P1, or dismiss with a concrete reason in the trail. If the design is contested, or the stakes are high, `interrogate` before shipping.
+7. Complete `skill://deslop` for changed code. Use `skill://no-comments` only for changed comments that need independent cleanup. Skip both for prose-only work and reuse cleanup already done on this diff. Choose review coverage under `skill://thermos`, reusing any applicable prior review or available GitHub feedback. Verify accepted fixes on the affected path, not with another broad audit.
 8. Run **Opening a PR**.
 
 Code-coupled work (one feature, one migration) goes to a single owner with the checkpoint inline. That owner fans out internally after the blocking phase. Parent-level fan-out is for slices that produce independent artifacts (audits, cross-subsystem investigations, competing experiments). Rewrite the checkpoint at phase boundaries. Spawn a fresh owner rather than chaining interrupts.

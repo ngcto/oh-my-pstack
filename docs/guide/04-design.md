@@ -64,19 +64,21 @@ Reach for it when parallelism buys coverage or lets independent checks race. `/a
 
 Read the dismissals too. The lead is a pragmatic senior engineer, not an oracle, and you can override it.
 
-## Thermos, the cheaper default gate
+## Thermos for a deep review
 
-[`/thermos`](../../skills/thermos/SKILL.md) runs the same two lenses on one model tier, in parallel, and returns one deduped verdict. It is the default review gate before every PR. Reach for `/interrogate` on top of it when the design is contested, the stakes are high, or you want several models to disagree with each other.
+[`/thermos`](../../skills/thermos/SKILL.md) runs the same two lenses on one model tier, in parallel, and returns one deduped verdict. It is an optional deep review, not a pre-PR gate. Follow the [proportional review policy](../../skills/thermos/SKILL.md). Run it once when requested or when focused verification leaves a concrete high-impact risk unresolved. Name that risk before a risk-driven run.
+
+Use `/interrogate` instead for a multi-model request or a genuinely contested high-risk design. Do not stack both reviews for the same decision.
 
 ## How much design work does a task deserve?
 
 You might be wondering whether every change needs this. No. Most changes need none of it. A rough ladder:
 
-- A small, finished change you're unsure about needs `/thermos` alone, or `/interrogate` if you want several models.
+- A small, low-risk change needs diff inspection and relevant checks, not a review agent. Use `/blast-radius` for a named uncertainty.
 - A change that crosses function boundaries or moves ownership earns `/architect`, which brings `/arena` with it.
 - A standalone decision where independent attempts would help, like naming, formats, or an algorithm, is `/arena` directly.
 - A coverage matrix, set of parallel checks, or race with declared arms is `/swarm`.
-- A contested design that's expensive to reverse gets `/architect`, then `/interrogate` before shipping.
+- A genuinely contested high-risk design that's expensive to reverse gets `/architect`, then one `/interrogate` review instead of thermos. Reuse that review when shipping.
 
 `/poteto-mode` already applies this ladder. Boundary-crossing work triggers `/architect` on its own, so you reach for these directly mainly when you want more or less scrutiny than the default.
 

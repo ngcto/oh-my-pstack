@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Interrogate
 
-Run the two thermo lenses once per configured model and synthesize across models. A panel seat is one model. Each seat runs both `thermo-review` (bugs, breakage, security, devex, feature gates) and `thermo-quality` (maintainability, code-judo, boundaries, module depth, test value). The adversarial signal comes from model diversity, not assigned personas.
+Run the two thermo lenses once per configured model and synthesize across models. A panel seat is one model. Each seat runs both `thermo-review` for correctness and security and `thermo-quality` for concrete maintainability regressions. The adversarial signal comes from model diversity, not assigned personas.
 
 The deliverable is a synthesized verdict. Do NOT auto-apply changes.
 
@@ -38,7 +38,7 @@ Call `pstack_models` with `role: "interrogate-reviewers"`. It returns the resolv
 Each resolved entry is one seat, labeled Seat A, B, C, and so on. Launch every seat in ONE `task` call. For each seat add two items to `tasks[]`, both with `model` set to that seat's selector:
 
 - `agent: thermo-review`, `solutionSpace`: "adversarial audit, breakage paths unknown"
-- `agent: thermo-quality`, `solutionSpace`: "structure may admit a much simpler reframing"
+- `agent: thermo-quality`, `solutionSpace`: "concrete maintainability regressions in the assigned scope"
 
 Use one `task` call with heterogeneous items instead of a `workpool`. A workpool binds one agent and replaces its structured output with a free-form schema, which would lose the priority 0-3 findings the synthesis relies on. Name items like `SeatAReview`, `SeatAQuality`.
 
@@ -70,10 +70,10 @@ Read `references/lead-judgment.md` for the full framework.
 
 Categorize every finding using these buckets:
 
-- **Act on**. Real issues affecting correctness, security, or maintainability given the actual goals. These would block a real PR.
-- **Consider**. Legitimate points, but you're not sure they outweigh the cost of addressing them right now. Worth the user's attention.
-- **Noted**. Technically valid but not actionable. Context-dependent, premature optimization, or low-impact given the current stage.
-- **Dismissed**. Wrong, nitpicky, or missing context. Brief explanation why.
+- **Act on**. Confirmed, in-scope P0 or P1 defects accepted by the owner. These block a real PR.
+- **Consider**. Concrete, non-blocking improvements, including P2 and P3 findings. Do not expand the task to satisfy them.
+- **Noted**. Technically valid but out of scope or intended.
+- **Dismissed**. Wrong, speculative, preference-only, or already handled. Give a concrete reason.
 
 For each finding, include:
 - Which seat(s) (models) and lens(es) raised it, and its priority (P0-P3)
@@ -107,4 +107,4 @@ Present the verdict in this structure:
 
 ## Relationship to thermos
 
-`interrogate` is `thermos` with model diversity. Thermos runs the two thermo lenses once as two agents on `@slow` and is the default, cheap gate. Interrogate runs the same two agents once per panel seat across several models, then adds lead judgment. Escalate from thermos to interrogate when the design is contested, the stakes are high, or the user asks for multi-model or adversarial review.
+`interrogate` is thermos with model diversity. Use it for an explicit multi-model request or a genuinely contested high-risk design. It replaces thermos for that decision, not an extra gate after it. Follow `skill://thermos` for review reuse and stop conditions. Verify accepted fixes on the affected paths. Do not rerun the panel to chase zero findings.

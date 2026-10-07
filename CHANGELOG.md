@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- Local review is proportional to risk. Low-risk tasks need no review agent. Routine changes use relevant checks and the existing `blast-radius` skill for focused verification. Thermos is reserved for explicit deep-review requests or concrete unresolved high-impact risks.
+- Playbooks reuse review coverage across PR creation, pushes, babysitting, and merge prep. Accepted fixes use targeted proof instead of another broad review. Available GitHub bot or human feedback covers routine PR review without local corroboration.
+- Thermo reviewers report evidenced defects and concrete maintenance costs. P2 and P3 suggestions, file-length thresholds, and missed redesign opportunities no longer block delivery or start a zero-findings loop.
+
 ## 0.2.1
 
 ### Changed

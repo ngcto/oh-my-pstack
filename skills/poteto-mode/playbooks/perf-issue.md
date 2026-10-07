@@ -17,7 +17,7 @@
 3. Plan the fix from the trace. If it crosses a function boundary, `architect` first, and shape the boundary per **principle-small-door-big-room**. Delegate implementation to a subagent on the `code` role (see the roles contract in `setup-pstack`; call `pstack_models` with `role: "code"` and pass the returned selector as the task's `model`, default `@task`). Use the `hardest` role for subtle algorithms. Review the diff. Capture a post-fix trace. Any benchmark or regression test you add or change passes the **principle-tests-pay-rent** authoring gate.
    Apply the **sequence-verifiable-units** principle skill, verifying each attempt before trying the next.
 4. Parse and compare the artifacts (JSON to sqlite, diff). "Inconclusive" or wrong-surface is not a pass. Flag it.
-5. Run **no-comments** and **deslop** on the diff, then run the **thermos** skill on it (base to head, with an intent paragraph that states the baseline and post-fix numbers). Fix every P0 and P1, or dismiss with a concrete reason in the trail.
+5. Complete `skill://deslop` for changed code. Use `skill://no-comments` only for changed comments that need independent cleanup. Skip both for prose-only work and reuse cleanup already done on this diff. Choose review coverage under `skill://thermos`, reusing applicable prior coverage. Include the baseline and post-fix numbers as context for any scoped review. Verify accepted fixes on the affected path, not with another broad audit.
 6. Cite the measurement in the PR.
 7. Run **Opening a PR**.
 
