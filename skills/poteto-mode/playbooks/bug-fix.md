@@ -10,7 +10,7 @@ Be scientific. Every shipped line traces to runtime evidence. Belt-and-suspender
 4. Verify on the same surface. The original repro now passes. "Inconclusive" or wrong-surface is not a pass. Flag it. Unit tests show branch behavior, not bug absence.
 5. Stage the commits so the failing repro lands before the fix in git history. See the **tdd** skill for the failing-test-first cadence when the bug has a cheap local test path. Skip it when the test would be expensive, integration-heavy, or unclear. Any test you add or change passes the **principle-tests-pay-rent** authoring gate: it must fail without the fix and name the behavior it guards.
    This is the canonical **sequence-verifiable-units** principle skill, the failing test first and the fix on top.
-6. Run **no-comments** and **deslop** on the diff, then run the **thermos** skill on it (base to head, with an intent paragraph). Fix every P0 and P1, or dismiss with a concrete reason in the trail. Use `interrogate` instead when the fix is contested or the stakes are high.
+6. Complete `skill://deslop` for changed code. Use `skill://no-comments` only for changed comments that need independent cleanup. Skip both for prose-only work and reuse cleanup already done on this diff. Choose review coverage under `skill://thermos`, reusing any applicable prior review or available GitHub feedback. Verify accepted fixes on the affected path, not with another broad audit.
 7. Run **Opening a PR**.
 
 **Reply:** what was broken, root cause, fix, how you verified. Paste failing-then-passing repro output verbatim.

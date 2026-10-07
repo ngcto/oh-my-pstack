@@ -35,7 +35,7 @@ Never edit while a test run is in progress in the same checkout.
 3. Format the touched files, then `git diff --check`.
 4. Run the changed-files gate the repository requires.
 5. Read `git diff --numstat` and report production, tooling, and tests separately.
-6. Run `thermos` on the final diff, scoped to the audit branch.
+6. Confirm through independent judgment that deleted contracts retain their owner-boundary proof. Reuse an existing coverage-preservation review of the same scope. Apply `skill://thermos` for review choice, reuse, and stopping rather than adding thermos automatically.
 
 ### 5. Handoff report
 
@@ -43,6 +43,7 @@ Never edit while a test run is in progress in the same checkout.
 - Production owner simplifications.
 - Retained false positives and why they stay.
 - Proof actually run, focused and full.
+- Independent coverage-preservation verdict and any other review run or reused.
 - Production versus test LOC.
 - Named follow-ups.
 
@@ -63,6 +64,6 @@ Use when one subsystem's entire test surface needs pruning. Each step ends on it
    Judge a test by its assertions, not its name. Done when every declaration has a mark and an evidence line.
 4. **Layer plan per lane.** The ledger is input, not the edit list. A second read-only pass looks for the redundant layer: several suites replaying the same shared behavior through one mocked collaborator, around a stronger real-boundary suite. Run it with a `reviewer` or a `task` agent told to stay read-only, because it needs `git log` for history. Name the **keeper** suite for each contract, and prefer the real boundary with a fake network over a mocked collaborator. Fix ledger errors found here. Done when each plan names retired files, the keeper per contract, assertions to carry into keepers, and the test-only seams unlocked.
 5. **Cutover.** Spawn `task` writers with `isolated: true`, one per lane, and merge their results. Isolation only exists when `task.isolation.enabled` is on (default off; see the `setup-pstack` skill). With it off, create one worktree per lane with `/wt` and let a lane owner work in each, or run one writer at a time. Serialize changes to shared harnesses and support files through one owner. With each lane, remove the test-only seams it unlocks: injection parameters, getters, reset exports, indirection layers. Update test inventories, CI routing, and any shrink-only size baselines. Record durable ownership rules learned from this campaign's real mistakes where the subsystem's contributors will read them. Done when every plan is applied and each keeper passes.
-6. **Independent preservation review.** Run `thermos` on the final diff, then one `reviewer` per boundary group comparing deleted coverage against keepers. Reviewers only report: they look for contracts that lost their only proof and for new assertions that cannot fail, such as a rejection row production never reaches, and they never run builds or edit. The lane owner (or an isolated `task` writer) does the mutation check for each reported gap: mutate the production owner once, confirm the keeper goes red, then restore the source byte for byte. Done when every gap is restored or rejected with source evidence and every restored contract has a caught mutation.
+6. **Independent preservation review.** Use one `reviewer` per boundary group to compare deleted coverage against keepers, or reuse an existing independent preservation review that covers the same scope. Reviewers look for contracts that lost their only proof and for new assertions that cannot fail, such as a rejection row production never reaches. They only report and never run builds or edit. Apply `skill://thermos` for review choice, reuse, and stopping. Do not add thermos automatically on top of preservation review. The lane owner (or an isolated `task` writer) does the mutation check for each reported gap: mutate the production owner once, confirm the keeper goes red, then restore the source byte for byte. Done when every gap is restored or rejected with source evidence and every restored contract has a caught mutation.
 7. **Product defects.** A baseline failure that survives into a keeper is a bug report. Fix it at its owner in a separate commit and prove it through the real user flow, with a control run that reverts the fix and shows the old behavior. Log unrelated discrepancies as follow-ups. Done when each repaired defect has a failing control and a passing candidate on the same harness.
 8. **Reconcile and hand off.** Merge the trunk into a long campaign instead of rebasing. When the trunk edited a file the campaign deleted, keep the deletion, port the new contract into the keeper, and confirm each new regression still has a home. Rerun the whole subsystem suite on the merged head. Hand off with the audit report plus baseline and final line counts (production separate), lanes, retired layers and keepers, preservation gaps with their mutations, and defects with control and candidate proof.

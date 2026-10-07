@@ -25,7 +25,7 @@ Reviewers, especially adversarial ones, tend to fill their review. If they don't
 
 ### Premature Abstraction Warnings
 
-Reviewers often suggest extracting functions, adding interfaces, or creating abstractions. Does this code need to change in a second way? If not, the abstraction is premature. Simple inline code that works beats a clean abstraction that's overkill for the current scope.
+Judge an extraction or abstraction by the complexity it removes or the invariant it clarifies in the current change. A demonstrated cohesion or ownership problem can justify it without a second use case. Reject speculative extension points and layers that only redistribute the same complexity. Keep a useful behavior-preserving simplification visible for the owner's decision.
 
 ### "I Would Have Done It Differently"
 

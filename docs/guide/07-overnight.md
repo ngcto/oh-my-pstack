@@ -56,13 +56,13 @@ Before the skill hands back its summary, it spawns a reviewer on a different mod
 
 The contract above drives one task to one finish condition. Some nights hold more, a queue of independent changes or a whole program. Three playbooks scale the same trust up.
 
-[Autopilot-full](../../skills/poteto-mode/playbooks/autopilot-full.md) runs a queue of independent PRs to merged. Each PR gets one owner agent that carries it from build through merge, and no owner merges on its own verdict. A swarm of fresh verifiers, with the two thermos lenses as mandatory lanes, starts a round at the owner's code-ready head and again at every later push that changes the patch. Only a clean verdict on the patch that merges authorizes the merge:
+[Autopilot-full](../../skills/poteto-mode/playbooks/autopilot-full.md) runs a queue of independent PRs to merged. Each PR gets one owner agent that carries it from build through merge, and no owner merges on its own verdict. The coordinator requires an independent verdict plus current-head CI and relevant behavior evidence before authorizing a merge. A prior independent verdict or GitHub review that covers the change may satisfy the review part. It follows the [proportional review policy](../../skills/thermos/SKILL.md) rather than making thermos a mandatory lane. Requested deep review or a named high-impact risk left unresolved by focused checks gets one thermos run. Reuse reviews across later pushes and stages, and verify accepted fixes on the affected path. A new SHA alone is not a review trigger. Merge once confirmed blockers are resolved and relevant checks pass, not when every suggestion has disappeared:
 
 ```text
 /poteto-mode full autopilot on this queue. each item is independent. i want them merged by morning.
 ```
 
-[Autopilot-stack](../../skills/poteto-mode/playbooks/autopilot-stack.md) runs the same owner loop but ships nothing. You wake up to one linear stack of PRs with a verifier's verdict on every link, and you review and land it yourself. Pick it over Autopilot-full when the changes are coupled, or when you want your own eyes on the work before anything merges:
+[Autopilot-stack](../../skills/poteto-mode/playbooks/autopilot-stack.md) runs the same owner loop but ships nothing. You wake up to one linear stack of PRs with an independent verdict and current verification evidence on every link, and you review and land it yourself. Pick it over Autopilot-full when the changes are coupled, or when you want your own eyes on the work before anything merges:
 
 ```text
 /poteto-mode autopilot these five changes but stack them, don't ship. i'll land the stack in the morning.

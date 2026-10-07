@@ -32,7 +32,7 @@ Each worker owns one package. The parent waits for every slice and returns one `
 /thermos the whole branch against main
 ```
 
-Two lenses, bugs and security plus maintainability, run on the same diff. You get one deduped verdict, findings first. It never edits.
+The command requests one deep review under the [review policy](../../skills/thermos/SKILL.md). Both full lenses search the same scope for bugs, security issues, cross-package breakage, structural regressions, and code-judo simplifications. Thermos is the cheaper alternative to a multi-model panel through fewer reviewers, not less depth. You get one deduped verdict with useful P0-P3 findings. It never edits. Choose which improvements to accept and verify their affected paths instead of repeating the audit until no findings remain.
 
 ## Review a branch skeptically
 
@@ -40,7 +40,7 @@ Two lenses, bugs and security plus maintainability, run on the same diff. You ge
 /interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's an actual bug or regression in behavior.
 ```
 
-The qualifiers do real work. "don't change anything yet" keeps it read-only, and the nitpick rule pre-filters the noise so `Act on` findings are worth your time.
+The qualifiers do real work. "don't change anything yet" keeps it read-only, and the nitpick rule pre-filters the noise so `Act on` findings are worth your time. Use this multi-model review instead of thermos, not after it.
 
 ## Fix a bug through a failing test
 
@@ -92,11 +92,12 @@ That's the whole prompt. "Plain", "eli5", and "in human" work too. The agent res
 - **A vague finish condition.** "make it better" gives `/loop` nothing to check. Give a command or artifact that can pass or fail.
 - **Parallel agents in one worktree.** They overwrite each other and the diff becomes archaeology. Say "own worktree per attempt" and the isolation is free.
 - **Using `/arena` for coverage.** `/arena` repeats one design or code brief, then picks a base and grafts the best parts. `/swarm` partitions slices or declared race arms and aggregates one report.
-- **Accepting every review comment.** Review bots and humans both file real catches and noise in one list. `/interrogate` sorts findings into act-on and dismissed buckets with reasons, and you can override either way.
+- **Accepting every review comment.** Review bots and humans both file real catches and noise in one list. Verify concrete claims with targeted evidence. Dismiss speculation and preferences with reasons instead of launching another audit. File length, style, and hypothetical abstractions are not blockers. Use the [review policy](../../skills/thermos/SKILL.md) to distinguish blockers from non-blocking suggestions.
+- **Treating review as a loop until clean.** Reuse existing reviews across PR creation, babysitting, and shipping. Prove accepted fixes with targeted checks. Another review needs a request or a new high-impact risk outside the reviewed scope, not a new SHA. Stop when confirmed blockers are resolved and relevant checks pass.
 - **Hardcoding a model id.** Roles default to aliases like `@slow` and `@task`, so pstack works on any provider. Override through [setup](./01-setup.md), not by naming a model in a prompt.
 - **Rereading a dense reply instead of asking.** Say `simpler`.
 - **Reporting success off a green build.** A build proves it compiles. Ask for the real command, flow, stored value, or profile, and expect the evidence in the reply.
-- **Writing a `SKILL.md` freehand.** Route it through the [Authoring or modifying a skill playbook](../../skills/poteto-mode/playbooks/authoring-a-skill.md) so validation and review happen.
+- **Writing a `SKILL.md` freehand.** Route it through the [Authoring or modifying a skill playbook](../../skills/poteto-mode/playbooks/authoring-a-skill.md) so validation is covered and review stays [proportional](../../skills/thermos/SKILL.md).
 
 That's the guide. If you skipped ahead, go back to [setup](./01-setup.md) and run one real task. The habits stick from use, not from reading.
 

@@ -31,9 +31,9 @@ Spawn all N workers in one `task` batch, or push them into an eval `workpool` wh
 
 When a worker must start from a non-default branch, name the branch in its brief and have it check that branch out first.
 
-When the swarm verifies a PR, the two thermo lenses are mandatory lanes, run through the `thermos` skill: agents `thermo-review` and `thermo-quality`, scoped to the same diff, launched as items of one `task` call with heterogeneous `agent` values (not a `workpool`, which would drop their structured output). The swarm's own lanes are the coverage-matrix, race, and gauntlet lanes. The thermo lanes never substitute for them and they never substitute for the thermo lanes.
+For PR verification, apply `skill://thermos` to review choice, reuse, and stopping. A swarm is not a mandatory local audit, and autonomous execution does not raise the review level. Use the swarm for distinct coverage-matrix, race, or gauntlet scenarios that need parallel workers. Reuse valid receipts and existing independent audits or GitHub reviews. Refresh only lanes affected by changed behavior, not all lanes for a new head SHA or push. When the policy selects thermos, it replaces duplicate diff-audit lanes. Keep the necessary behavioral checks. A small low-risk unit needs a direct check and receipt, not a review-only agent that reruns a command.
 
-Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first.
+Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first. Separate confirmed defects from non-blocking suggestions. For PR verdicts, apply the blocker and stop rules in `skill://thermos`.
 
 If a worker drops out, proceed with N-1 and note it.
 
@@ -45,4 +45,4 @@ Keep a compact result table, one-line evidenced issues, and explicit gaps or dro
 
 ## Phase D: Report
 
-Return one consolidated in-chat report with the table, issue one-liners, gaps or dropouts, and the race rule when used.
+Return one consolidated in-chat report with the table, issue one-liners, gaps or dropouts, and the race rule when used. For PR verification, include the check receipts and review sources actually run or reused.

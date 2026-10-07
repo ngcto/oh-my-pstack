@@ -10,7 +10,7 @@ Seven deltas from upstream:
 
 1. **No `/bro` skill.** Plain voice is the default. [`rules/pstack-voice.md`](./rules/pstack-voice.md) is always applied. Say "simpler" to get an even plainer restatement.
 2. **No `origin` CLI.** GitHub through `gh` is the only forge.
-3. **Thermos in every review step.** Pre-PR gate, babysit, shipping verdicts, autopilot verifier rounds, review-bot triage, and per-PR review in orchestrate and multi-phase plans all run [`thermos`](./skills/thermos/SKILL.md). `interrogate` stays as the multi-model panel.
+3. **Review proportional to risk.** Small, low-risk changes need no review agent. Routine behavior changes use targeted checks and [`blast-radius`](./skills/blast-radius/SKILL.md) for concrete uncertainty. [`thermos`](./skills/thermos/SKILL.md) is a single deep review for explicit requests or unresolved high-risk concerns. Existing reviews are reused across PR creation, pushes, and merge prep.
 4. **New principle [`tests-pay-rent`](./skills/principle-tests-pay-rent/SKILL.md)**, from OpenClaw's `test-audit`. Authoring gate, junk patterns, retention bar, audit sweeps.
 5. **New principle [`small-door-big-room`](./skills/principle-small-door-big-room/SKILL.md)**, from `codebase-design`. Deep modules, seams, the deletion test.
 6. **`deslop`, `control-cli`, `control-ui` ship here** instead of living in a second plugin. UI control uses the bundled `browser-use` and `cua-driver` guides rather than omp's built-in UI globals.
@@ -123,9 +123,9 @@ New here? The [guide](./docs/guide/README.md) walks a first real task from setup
 | [`tdd`](./skills/tdd/SKILL.md) | failing test first, then the fix, when there is a cheap test path. |
 | [`teach`](./skills/teach/SKILL.md) | runs `how` and `why` and weaves one plain explanation. |
 | [`technical-writing`](./skills/technical-writing/SKILL.md) | layered doc standard for docs, RFCs, readmes, PR bodies, commit messages. |
-| [`thermo-nuclear-code-quality-review`](./skills/thermo-nuclear-code-quality-review/SKILL.md) | strict maintainability lens on a scoped diff. |
-| [`thermo-nuclear-review`](./skills/thermo-nuclear-review/SKILL.md) | strict bugs, breakage, and security lens on a scoped diff. |
-| [`thermos`](./skills/thermos/SKILL.md) | both thermo lenses in parallel on one diff, one deduped verdict. |
+| [`thermo-nuclear-code-quality-review`](./skills/thermo-nuclear-code-quality-review/SKILL.md) | deep maintainability, code-judo, file cohesion, spaghetti, module depth, and test value on a scoped diff. |
+| [`thermo-nuclear-review`](./skills/thermo-nuclear-review/SKILL.md) | comprehensive correctness, security, cross-package breakage, devex, and feature-gate review. |
+| [`thermos`](./skills/thermos/SKILL.md) | two full deep-review lenses and one deduped verdict, with a policy for choosing and reusing review coverage. |
 | [`typescript-best-practices`](./skills/typescript-best-practices/SKILL.md) | grounds the type-system principle in TypeScript syntax. loads on .ts files. |
 | [`unslop`](./skills/unslop/SKILL.md) | cut AI tells from any writing. |
 | [`why`](./skills/why/SKILL.md) | find why something was built this way, from source control and MCPs. |
@@ -169,16 +169,18 @@ Twenty-six short skills, one principle each: the 24 from upstream plus two new o
 |---|---|
 | [`comment-sicko`](./agents/comment-sicko.md) | A deranged comment-hater that savors deletion and condemns workaround code. Read-only reporter. |
 | [`poteto-agent`](./agents/poteto-agent.md) | Full-access worker that runs in poteto-mode style. Routing target for playbook steps, code-writing delegates, and ad-hoc helpers. Autoloads the poteto-mode skill, so prefer it over the plain task agent whenever poteto's rigor is wanted. Spawn a fresh one per new task. |
-| [`thermo-quality`](./agents/thermo-quality.md) | Thermo-nuclear code quality audit (maintainability, code-judo, 1k-line rule, spaghetti, module depth, test value) scoped to the diff. Gathers its own diff from a scope spec. Read-only. |
-| [`thermo-review`](./agents/thermo-review.md) | Thermo-nuclear branch audit (bugs, breaking changes, security, devex, feature-gate leaks) scoped to the diff. Gathers its own diff from a scope spec. Read-only. |
+| [`thermo-quality`](./agents/thermo-quality.md) | Deep structural audit for maintainability regressions and code-judo opportunities. Gathers its own scoped diff. Read-only. |
+| [`thermo-review`](./agents/thermo-review.md) | Comprehensive correctness and security audit that traces cross-package impact from a scoped diff. Read-only. |
 
 Use `poteto-agent` for any subagent spawned inside a playbook step. It autoloads `poteto-mode`, so it starts with the rules already read.
 
 ## thermos
 
-Thermos is two diff-scoped review lenses, run together. [`thermo-nuclear-review`](./skills/thermo-nuclear-review/SKILL.md) (agent `thermo-review`) hunts bugs, breakage, security issues, devex problems, and feature-gate leaks. [`thermo-nuclear-code-quality-review`](./skills/thermo-nuclear-code-quality-review/SKILL.md) (agent `thermo-quality`) checks maintainability, the 1k-line rule, spaghetti, and module boundaries. The [`thermos`](./skills/thermos/SKILL.md) skill runs both in parallel on one scoped diff and returns one deduped verdict, `approve` or `changes_requested`.
+[`Thermos`](./skills/thermos/SKILL.md) separates review frequency from depth. Low-risk work uses diff inspection and relevant checks without a review agent. Routine behavior changes use tests and a smoke run. The bundled [`blast-radius`](./skills/blast-radius/SKILL.md) skill is an evidence-driven alternative for critical assumptions and downstream effects. It traces deeply, exercises real failure cases, and states what it did not cover. When GitHub bots or humans cover routine PR review, use their feedback rather than duplicating it locally. Check that coverage exists. PR creation does not wait for a bot that starts only after the PR opens.
 
-Where it runs: the pre-PR gate in [opening a pr](./skills/poteto-mode/playbooks/opening-a-pr.md), each new patch in [babysit](./skills/poteto-mode/playbooks/babysit.md), the independent per-PR verdict in [shipping](./skills/poteto-mode/playbooks/shipping.md), verifier rounds in [autopilot-full](./skills/poteto-mode/playbooks/autopilot-full.md) and [autopilot-stack](./skills/poteto-mode/playbooks/autopilot-stack.md), the review step in feature, bug fix, refactoring, perf, orchestrate, and multi-phase plans, and review-bot triage. Agents gather their own diff from a scope spec, so nothing large is pasted into a prompt. A P0 or P1 finding blocks the step. Thermos never edits.
+An explicit deep-review request or a concrete high-impact risk left unresolved by focused verification gets one thermos run. Both full lenses inspect the same scope in parallel. They search for unnamed failures, cross-package consequences, serious structural regressions, and code-judo simplifications. Useful P0-P3 findings remain visible. [`Interrogate`](./skills/interrogate/SKILL.md) uses the same rubrics across multiple models. Thermos is the cheaper alternative for deep findings because it runs one pair of agents, not because it reviews less thoroughly.
+
+Reuse reviews across implementation, PR creation, babysitting, and shipping. A push, changed SHA, rebase, or merge request is not a reason to run another audit. Verify accepted fixes on the affected paths. Stop when evidenced, in-scope P0 or P1 blockers are fixed or dismissed with evidence and relevant checks pass. A serious structural regression can be a blocker. Lower-priority findings and simplification proposals stay available for the owner's decision without forcing a zero-findings loop. Behavioral verification, GitHub checks, and stack merge safety still apply.
 
 ## stacked PRs
 

@@ -48,7 +48,7 @@ In context, that's enough. [`/tdd`](../../skills/tdd/SKILL.md) writes the smalle
 
 ## Clean before you commit
 
-The [Opening a PR playbook](../../skills/poteto-mode/playbooks/opening-a-pr.md) runs [`/no-comments`](../../skills/no-comments/SKILL.md) and [`/deslop`](../../skills/deslop/SKILL.md) on the diff before each commit, then [`/thermos`](../../skills/thermos/SKILL.md) on the result, and applies [`/unslop`](../../skills/unslop/SKILL.md) to the PR description and commit bodies. `/deslop` ships in this plugin. It removes narrating comments, unsupported guards, `any` casts, dead compatibility paths, and unrelated edits. Thermos runs last so it reviews the code that ships.
+The [Opening a PR playbook](../../skills/poteto-mode/playbooks/opening-a-pr.md) cleans code with [`/deslop`](../../skills/deslop/SKILL.md) before committing and applies [`/unslop`](../../skills/unslop/SKILL.md) to the PR description and commit bodies. `/deslop` ships in this plugin. It removes narrating comments, unsupported guards, `any` casts, dead compatibility paths, and unrelated edits. Use [`/no-comments`](../../skills/no-comments/SKILL.md) only when changed comments need an independent cleanup pass. Skip code-only cleanup agents for prose-only work. Choose any local review through the [proportional review policy](../../skills/thermos/SKILL.md). If that policy calls for thermos, run it once after cleanup so it reviews the code that ships. Do not repeat cleanup or review just because the same diff moves to a commit or PR.
 
 For prose, `/unslop` takes a target and any extra rules you have:
 
@@ -60,7 +60,7 @@ You'll develop your own shorthand. The skill reads intent fine from terse prompt
 
 ## Strip the comments with `/no-comments`
 
-Comments need their own pass, and not from the agent that wrote them. An author defends its comments the way you'd defend yours. So before review, hand them to fresh eyes:
+When changed comments need an independent cleanup pass, hand them to fresh eyes. Skip this agent for prose-only work or when the same diff has already had that cleanup:
 
 ```text
 /no-comments the diff
@@ -68,8 +68,8 @@ Comments need their own pass, and not from the agent that wrote them. An author 
 
 [`/no-comments`](../../skills/no-comments/SKILL.md) spawns the [`comment-sicko`](../../agents/comment-sicko.md) agent, a read-only reviewer with a short keep list: license headers, doc comments on a public API, links that explain what code can't, behavior forced by an external dependency you can't reshape. Everything else goes. A surprise in your own code gets no such pass. The comment comes back as a refactor flag, and `/no-comments` fixes the flags it accepts at the root cause. When a comment claims a constraint, "do not remove", the skill offers to encode the claim as a type, test, or lint. Either way, the comment comes out.
 
-The division of labor is worth keeping straight. `/deslop` cleans slop out of the code, `/unslop` cleans it out of prose, `/no-comments` hands the comments to a reviewer who didn't write them, and `/thermos` reviews what is left.
+The division of labor is worth keeping straight. `/deslop` cleans slop out of the code, `/unslop` cleans it out of prose, `/no-comments` hands changed comments to an independent reviewer when they need cleanup, and `/thermos` is the optional deep review of what is left.
 
-**Pitfall:** cleanup is not optional polish. A diff with narrating comments and defensive dead weight reads as unfinished to reviewers, and the extra code is where the next bug hides. If the diff feels padded, say `deslop it` before you commit, not after review calls it out.
+**Pitfall:** cleanup should remove dead weight, not start a redesign. File length, style preferences, and hypothetical future abstractions are not blockers. If the diff feels padded, say `deslop it` before you commit, not after review calls it out.
 
 Next: [Verify and ship](./06-verify-and-ship.md).

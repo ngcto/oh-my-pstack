@@ -10,6 +10,8 @@ Find what a change breaks somewhere else, before it ships. Use for "blast radius
 
 Companion to `how` and `why`. `how` tells you what the code does. `why` tells you why it's shaped that way. Blast radius tells you what it breaks somewhere else.
 
+This is an evidence-driven alternative to a full thermos audit when the important question is an invariant or downstream consequence. Discover those assumptions from the change rather than waiting for the owner to name them. Trace deeply and report real findings encountered along the path. Lower cost comes from focused coverage, not weaker evidence. State what the check did not cover.
+
 Listing the callers is not the job. The agent can list those in a second with `xd://lsp` references and call hierarchy, and `xd://ast_grep` for structural patterns (every call shaped like `foo($$$ARGS)`, every subclass, every destructure of the changed type). Use them for the static side, and prefer them to a text search. The job is the breakage they won't show you.
 
 ## Don't trust your own writeup
@@ -35,7 +37,7 @@ Step 4 is usually one small script that imports the same library the app ships a
 3. Look where static search stops. Read the source of the library you call, and check its pinned version and any local patch. Work out when things run: microtasks, unmount and teardown, Solid versus React. Follow what `xd://lsp` and `xd://ast_grep` miss: the JSON an API returns, a DB column, a wire format, another language reading the same bytes, a feature flag, code three hops downstream, dynamic dispatch and string-keyed lookups.
 4. Be honest about each risk. Give it a real chance of happening and a real cost if it does. Keep the risks you confirmed. List the ones you checked and cleared separately. Same rules as `why`. Cite a real `file:line`, a search that finds nothing is still an answer, and never make up a caller or an API.
 5. Prove the one fact. Write a script or test that runs the real code, run it, and paste what happened.
-6. For a big or wide change, run it as an `arena`. Ask several models the same question and merge the answers. Different models catch different real bugs. For a diff you don't trust, `thermos` is the cheap second opinion on the same scope, but it reads the diff and does not run anything, so it never replaces step 5.
+6. Stop when the critical assumptions and failure paths discovered in this investigation are proved or dismissed. Report a confirmed issue even if it was not the initial concern. Follow `skill://thermos` when a concrete high-impact uncertainty remains or the user wants a whole-scope deep review. Choose the method for the uncertainty, not an automatic arena or thermos sequence. Review never replaces step 5.
 
 ## What to hand back
 

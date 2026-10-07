@@ -20,7 +20,11 @@ Match the check to the change:
 - A perf change compares before and after profiles.
 - A storage change reads back the written value.
 
-For a small diff you don't fully trust, [`/blast-radius`](../../skills/blast-radius/SKILL.md) finds what it could break elsewhere. It picks the one fact the change is safe because of and proves it by running code instead of writing an essay about it.
+Follow the [proportional review policy](../../skills/thermos/SKILL.md). Small, low-risk changes use diff inspection and relevant checks without a review agent. Routine behavior changes use relevant tests and a smoke run of the changed path.
+
+Use [`/blast-radius`](../../skills/blast-radius/SKILL.md) inline when the change's safety depends on an invariant or downstream effect. It discovers critical assumptions, traces their consumers, and exercises real failure cases. This is a focused way to investigate deeply, not proof that every issue in the diff has been audited.
+
+Request [`/thermos`](../../skills/thermos/SKILL.md) for one deep review, or use it when focused verification leaves a concrete high-impact risk unresolved. The pair uses both complete rubrics to search for unnamed failures, cross-package consequences, structural regressions, and code-judo simplifications. Name the concern before a risk-driven run without restricting findings to it. `/interrogate` runs the same rubrics across multiple models when that diversity would help. Thermos is the cheaper alternative for deep findings through one pair of reviewers, not a weaker rubric.
 
 ## Create a project verification skill
 
@@ -54,7 +58,9 @@ Apps change and feature maps rot. When yours drifts, run:
 /poteto-mode open the pr. small ordered commits, evidence in the description.
 ```
 
-The [Opening a PR playbook](../../skills/poteto-mode/playbooks/opening-a-pr.md) works from a worktree, rebases the work into small ordered commits, cleans the diff, runs [`/thermos`](../../skills/thermos/SKILL.md) as the pre-PR gate, unslops the prose, and returns the PR link. A P0 or P1 finding from either thermos lens blocks the PR until it is fixed or dismissed with a concrete reason. Five narrow PRs beat one fat one, and stacked follow-ups beat a growing branch. Stacks use GitHub native Stacked PRs through `gh stack`, covered by the [`stacked-prs`](../../skills/stacked-prs/SKILL.md) skill. `gh stack submit --auto` leaves generated titles and empty bodies, so the stacker then sets each PR's title and description with `gh pr edit`. If a repo doesn't have the preview enabled, the playbooks fall back to plain sequential PRs and say so once.
+The [Opening a PR playbook](../../skills/poteto-mode/playbooks/opening-a-pr.md) works from a worktree, rebases the work into small ordered commits, cleans the diff, keeps current verification evidence, unslops the prose, and returns the PR link. It follows the [review levels](../../skills/thermos/SKILL.md) without adding a pre-PR thermos gate. Open without waiting for bots that start on PR creation. Use bot or human feedback for routine PR review when available. Evidenced, in-scope P0 or P1 findings, including serious structural regressions, block until fixed or dismissed with evidence. Verify accepted fixes on their affected paths. Dismiss unsupported claims with a concrete reason. Keep useful P2 and P3 findings for the owner's decision without forcing another round. Five narrow PRs beat one fat one, and stacked follow-ups beat a growing branch. Stacks use GitHub native Stacked PRs through `gh stack`, covered by the [`stacked-prs`](../../skills/stacked-prs/SKILL.md) skill. `gh stack submit --auto` leaves generated titles and empty bodies, so the stacker then sets each PR's title and description with `gh pr edit`. If a repo doesn't have the preview enabled, the playbooks fall back to plain sequential PRs and say so once.
+
+Reuse reviews across implementation, PR creation, babysitting, shipping, and autonomous verification. A push, rebase, new head SHA, or stage change does not trigger another review. Keep evidence current by refreshing verification only on affected paths. Another local review needs an explicit request or a new high-impact risk outside the reviewed scope. Scope it to that delta.
 
 ## Drive the PR to merge-ready with Babysit
 
@@ -64,13 +70,13 @@ An open PR starts collecting blockers immediately. Checks fail, reviewers commen
 /poteto-mode babysit this pr. get it green.
 ```
 
-Babysit watches the PR with a bundled watcher and takes blockers in order: conflicts, then review threads, then CI. Each new patch gets a thermos pass on the delta since the last verdict. Every known fix batches into one push, so the checks restart once instead of after every fix. The comment triage is skeptical, because humans and review bots file real catches and noise in the same list. A bot finding that thermos also raised is high signal. A real finding gets a fix, and noise gets dismissed with the disproof posted on the thread. When all you want is status, ask smaller and Babysit answers without starting the loop:
+Babysit watches the PR with a bundled watcher and takes blockers in order: conflicts, then review threads, then CI. It reuses existing reviews and verifies accepted fixes on the affected path instead of repeating a broad audit. Every accepted fix batches into one push, so the checks restart once instead of after every fix. The comment triage is skeptical, because humans and review bots file real catches and noise in the same list. Verify a concrete claim before classifying or closing its thread, even without a code change. Do not launch thermos just to corroborate it. Fix evidenced blockers and accepted improvements. Dismiss noise with the disproof posted on the thread. If the owner declines a valid non-blocking suggestion, keep the finding as `consider`, acknowledge that decision, and resolve the thread without code changes. Keep true out-of-scope or intended findings as `noted` instead of dismissing them as false. Stop when evidenced blockers are resolved and relevant checks pass, not when every suggestion is gone. When all you want is status, ask smaller and Babysit answers without starting the loop:
 
 ```text
 /poteto-mode check on pr 123. anything outstanding?
 ```
 
-Babysit stops at merge-ready. It never merges, even with everything green, because merging is a different decision.
+Babysit starts only when requested and stops at merge-ready. It never merges, even with everything green, because merging is a different decision.
 
 ## Land the stack with Shipping
 
@@ -80,6 +86,6 @@ Green is not the same as safe. When you're ready to land, say so:
 /poteto-mode land the stack.
 ```
 
-The [Shipping playbook](../../skills/poteto-mode/playbooks/shipping.md) verifies each PR independently before it lands or merges anything. One fresh agent per PR proves the behavior live, and the agent that judges a change is never the one that wrote it. The verdict combines thermos with a swarm of live checks. Then Shipping lands only the contiguous verified run from the bottom, which merges the chosen PR and every unmerged PR below it, all or nothing. It pins the verified head SHA through the `merge-async` API, or re-reads the head SHA right before `gh stack merge`, which cannot pin one. It reports the first PR that breaks the chain. A verified PR sitting above an unverified one waits, because merging it would pull the gap in underneath. GitHub doesn't support auto-merge for stacked PRs, so Shipping uses the merge queue or merges once the run is mergeable.
+The [Shipping playbook](../../skills/poteto-mode/playbooks/shipping.md) verifies each PR independently before it lands or merges anything. The change's author cannot supply the independent verdict. A prior independent verdict or GitHub review that covers the change may satisfy the review part. CI and relevant checks must cover the current head. Behavior changes also need live evidence. Refresh affected checks without repeating a covered review under the [same policy](../../skills/thermos/SKILL.md). Record the current verified head and base even when the patch-id is unchanged. Then Shipping lands only the contiguous verified run from the bottom, which merges the chosen PR and every unmerged PR below it, all or nothing. It pins the verified head SHA through the `merge-async` API, or re-reads the head SHA right before `gh stack merge`, which cannot pin one. It reports the first PR that breaks the chain. A verified PR sitting above an unverified one waits, because merging it would pull the gap in underneath. GitHub doesn't support auto-merge for stacked PRs, so Shipping uses the merge queue or merges once the run is mergeable.
 
 Next: [Run work while you sleep](./07-overnight.md).

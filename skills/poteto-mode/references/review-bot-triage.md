@@ -4,21 +4,23 @@ Use this reference when the Babysit playbook (`../playbooks/babysit.md`) handles
 
 ## Signal weighting
 
-Read bot comments after your own independent audit, never before. Then weight each finding by who else saw it:
+Use available GitHub bot or human feedback as review coverage under `skill://thermos`. Do not require a local audit before reading it.
 
-- A finding the **thermos** skill also raised independently (either lens) is high signal. Treat it as a fix candidate and classify it with the rubric below.
-- A bot-only finding needs a verification step before action. Reproduce it, run the cited test, read the cited code path, or prove the guard exists. Classify it only after that step, and name the step in the reply or thread.
-- A finding thermos raised that no bot did is still a finding. Bots are a second opinion, not the gate.
+- A finding a prior independent review also raised is high signal. Thermos counts when it already ran. Do not launch it solely for corroboration.
+- Verify concrete claims before classifying or closing a thread, even when no code change is planned. Reproduce the issue, run the cited test, read the cited code path, or prove the guard exists. Name the evidence in the reply or thread. Use a focused check, not another open-ended audit.
+- A finding raised by only one reviewer still gets judged on its evidence. Neither GitHub-only nor local-only feedback requires a second reviewer.
 
 ## Decision rubric
 
-Classify each bot thread before acting:
+Classify each thread under `skill://thermos` before acting:
 
-- `fix`: The comment identifies a plausible correctness, security, privacy, data loss, auth, billing, migration, idempotency, race, or shipped-behavior issue. Fix it in the lowest owning PR, then reply with the commit SHA and resolve the thread.
-- `dismiss`: The comment matches a documented low-risk noisy pattern, and the current code/context proves the concern does not need a code change. Reply with a short reason and resolve the thread.
-- `ask`: The comment is novel, high-severity, security/privacy/data-related, or ambiguous. Ask the user instead of guessing.
+- `fix`: An evidenced, in-scope P0 or P1, or a lower-priority issue or simplification the owner accepts. Fix the root cause in the lowest owning PR and prove the affected behavior. Prefer deletion or a simpler model when that removes the problem. Reply with the commit SHA and resolve the thread. A plausible concern alone is not evidence.
+- `dismiss`: The current code or contract disproves the claim, or the comment is speculative, preference-only, or already handled. Reply with a concrete reason and resolve the thread.
+- `consider`: The finding is valid and non-blocking, but the owner declines or defers the change. Record the finding and the owner's decision, acknowledge the suggestion in the thread, and resolve it without changing code. Declining work does not make the finding false. An unresolved evidenced P0 or P1 cannot take this disposition.
+- `noted`: The claim is true but outside this PR's scope or describes intended behavior. Preserve that distinction in the record, explain it in the thread, and resolve without changing code. Do not use this to hide a regression introduced by the PR.
+- `ask`: A confirmed risk needs a product or operator decision that code and focused checks cannot settle. State the evidence and the remaining decision instead of guessing.
 
-When in doubt, ask. Skipping a noisy code-quality comment is cheap; skipping a real data or security bug is not.
+Resolve factual uncertainty with code or focused checks before escalating. Use `skill://thermos` for blocking and re-review rules. Non-blocking suggestions do not become fix gates because a bot filed them.
 
 ## Learned pattern format
 
@@ -80,14 +82,15 @@ Use `candidate` for one or two examples. Use `recurring` after multiple real dis
 - Do not skip when: The only evidence is a human saying "false positive" on a high-risk issue without explanation.
 - Example signal: A file-naming rule comment whose body says the file is already compliant.
 
-## Ask by default
+## Investigate high-risk findings
 
 Do not auto-skip these categories, even if a previous PR dismissed something similar:
 
 - Security, privacy, auth, billing, data retention, training-data, and permission-boundary findings.
 - High-severity findings.
 - Migration, schema, idempotency, concurrency, and cross-system behavior findings.
-- Comments where the suggested fix is small and clearly reduces risk without changing product intent.
+
+A small suggested fix is not automatically required. Confirm its benefit and scope, then classify it with the same rubric.
 
 Historical data showed humans sometimes dismiss security/data-flow comments. Treat those as owner judgment calls, not team-wide skip rules.
 
@@ -99,7 +102,7 @@ Append new candidate learnings here during or after babysitting when they look t
 
 - Confidence: candidate
 - Skip when: Practically never. When a diff replaces native browser behavior with a manual equivalent (native sticky → JS-positioned clones, native scroll targeting → forwarded wheel/touch events, paint-order occlusion → masks/clip-path), a review bot's logic-bug findings against that code have been consistently legitimate.
-- Do not skip when: The finding concerns event-forwarding gaps (wheel deltaMode, touch pans, scroll-chaining at edges, tap slop), mask/clip hit-testing divergence, or observer-vs-React state timing races in such code. Default to fix.
+- Do not skip when: The finding concerns event-forwarding gaps (wheel deltaMode, touch pans, scroll-chaining at edges, tap slop), mask/clip hit-testing divergence, or observer-vs-React state timing races in such code. Verify the claimed mechanism and fix it when confirmed and accepted.
 - Example signal: "masks do not affect hit-testing", "overlay blocks wheel scroll", "ignores deltaMode", "runs in the IntersectionObserver callback before React applies state".
 - Source: one sticky-occlusion PR: six bot passes, roughly eighteen findings, every one fixed rather than dismissed.
 
