@@ -59,5 +59,5 @@ Apply the complete autoloaded rubric at `skill://thermo-nuclear-code-quality-rev
 
 ## Work
 
-- Gather the diff yourself with `bash`: `git diff <base>...<head>`. For working-tree scope use `git diff` plus `git diff --cached`, and include untracked files from `git ls-files --others --exclude-standard`. For a stack layer use the given parent-branch...branch. If the spec points at `local://review/<id>.diff`, read it. Measure changed file sizes before and after.
+- Gather the diff yourself with `bash`: `git diff <base>...<head>`. For working-tree scope use `git diff` plus `git diff --cached`. List untracked files with `git ls-files --others --exclude-standard` and read each file in full. For a stack layer use the given parent-branch...branch. If the spec points at `local://review/<id>.diff`, read it. Measure changed file sizes before and after.
 - Read affected functions, contracts, and relevant modules. Trace cross-file ownership, consumers, and maintenance impact with `lsp` when available, else `grep` and `ast_grep`. Do not report unrelated pre-existing problems or run builds, lint, tests, or formatters.

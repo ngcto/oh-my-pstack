@@ -59,5 +59,5 @@ Apply the complete autoloaded rubric at `skill://thermo-nuclear-review`. Read it
 
 ## Work
 
-1. Gather the diff yourself with `bash`: `git diff <base>...<head>`. For working-tree scope use `git diff` plus `git diff --cached`, and include untracked files from `git ls-files --others --exclude-standard`. For a stack layer use the given parent-branch...branch. If the spec points at `local://review/<id>.diff`, read it. Read affected functions, contracts, and relevant modules, then trace callers and consumers with `lsp` when available, else `grep` and `ast_grep`.
+1. Gather the diff yourself with `bash`: `git diff <base>...<head>`. For working-tree scope use `git diff` plus `git diff --cached`. List untracked files with `git ls-files --others --exclude-standard` and read each file in full. For a stack layer use the given parent-branch...branch. If the spec points at `local://review/<id>.diff`, read it. Read affected functions, contracts, and relevant modules, then trace callers and consumers with `lsp` when available, else `grep` and `ast_grep`.
 2. Perform the independent audit before reading PR discussion. Apply the rubric's tracing and discussion criteria. Do not run builds, lint, tests, or formatters.

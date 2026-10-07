@@ -75,7 +75,7 @@ Tag each finding with the lens from the item that produced it (`thermo-review` o
 2. Independent overlap raises confidence, not severity. Two opinions do not turn a preference into a blocker.
 3. Resolve disagreements with your own judgment. Read the relevant code. Do not average.
 4. Bucket every finding:
-   - **act-on**: evidenced, in-scope issue or simplification accepted by the owner. Fix the root cause without unrelated work.
+   - **act-on**: evidenced, in-scope P0 and P1 findings, plus lower-priority issues or simplifications accepted by the owner. Blockers belong here before owner acceptance. Fix the root cause without unrelated work.
    - **consider**: valid non-blocking improvement or lower-priority finding the owner has not selected, including code-judo opportunities. Preserve its evidence and tradeoff. Do not silently turn it into new work.
    - **noted**: true but out of scope or intended, recorded only.
    - **dismissed**: wrong, speculative, preference-only, or already handled, with a concrete reason.

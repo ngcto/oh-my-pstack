@@ -70,7 +70,7 @@ Read `references/lead-judgment.md` for the full framework.
 
 Categorize every finding using these buckets:
 
-- **Act on**. Evidenced, in-scope issues or simplifications accepted by the owner. P0 and P1 findings, including serious structural regressions, block a real PR until fixed or dismissed with evidence.
+- **Act on**. Evidenced, in-scope P0 and P1 findings, including serious structural regressions, belong here before owner acceptance and block until fixed or dismissed with evidence. Also include lower-priority issues or simplifications the owner accepts.
 - **Consider**. Valid non-blocking improvements or lower-priority findings not selected by the owner, including code-judo opportunities. Preserve the evidence and tradeoff. Do not silently turn them into new work. An unresolved evidenced P0 or P1 stays blocking under `skill://thermos` even if the owner declines the fix.
 - **Noted**. Technically valid but out of scope or intended.
 - **Dismissed**. Wrong, speculative, preference-only, or already handled. Give a concrete reason.

@@ -7,16 +7,17 @@ Use this reference when the Babysit playbook (`../playbooks/babysit.md`) handles
 Use available GitHub bot or human feedback as review coverage under `skill://thermos`. Do not require a local audit before reading it.
 
 - A finding a prior independent review also raised is high signal. Thermos counts when it already ran. Do not launch it solely for corroboration.
-- Verify concrete claims before changing code. Reproduce the issue, run the cited test, read the cited code path, or prove the guard exists. Name the evidence in the reply or thread. Use a focused check, not another open-ended audit.
+- Verify concrete claims before classifying or closing a thread, even when no code change is planned. Reproduce the issue, run the cited test, read the cited code path, or prove the guard exists. Name the evidence in the reply or thread. Use a focused check, not another open-ended audit.
 - A finding raised by only one reviewer still gets judged on its evidence. Neither GitHub-only nor local-only feedback requires a second reviewer.
 
 ## Decision rubric
 
 Classify each thread under `skill://thermos` before acting:
 
-- `fix`: The owner accepts an evidenced, in-scope issue or simplification. Fix the root cause in the lowest owning PR and prove the affected behavior. Prefer deletion or a simpler model when that removes the problem. Reply with the commit SHA and resolve the thread. A plausible concern alone is not evidence.
-- `dismiss`: The current code or contract disproves the claim, or the comment is speculative, preference-only, or outside scope. Reply with a concrete reason and resolve the thread.
+- `fix`: An evidenced, in-scope P0 or P1, or a lower-priority issue or simplification the owner accepts. Fix the root cause in the lowest owning PR and prove the affected behavior. Prefer deletion or a simpler model when that removes the problem. Reply with the commit SHA and resolve the thread. A plausible concern alone is not evidence.
+- `dismiss`: The current code or contract disproves the claim, or the comment is speculative, preference-only, or already handled. Reply with a concrete reason and resolve the thread.
 - `consider`: The finding is valid and non-blocking, but the owner declines or defers the change. Record the finding and the owner's decision, acknowledge the suggestion in the thread, and resolve it without changing code. Declining work does not make the finding false. An unresolved evidenced P0 or P1 cannot take this disposition.
+- `noted`: The claim is true but outside this PR's scope or describes intended behavior. Preserve that distinction in the record, explain it in the thread, and resolve without changing code. Do not use this to hide a regression introduced by the PR.
 - `ask`: A confirmed risk needs a product or operator decision that code and focused checks cannot settle. State the evidence and the remaining decision instead of guessing.
 
 Resolve factual uncertainty with code or focused checks before escalating. Use `skill://thermos` for blocking and re-review rules. Non-blocking suggestions do not become fix gates because a bot filed them.
